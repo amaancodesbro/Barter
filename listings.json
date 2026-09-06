@@ -1,9 +1,9 @@
 [
   {
-    "id": 1,
     "item": "iPhone 15",
     "owner": "Amaan",
     "userId": 1,
-    "condition": "Excellent"
+    "condition": "Excellent",
+    "id": 1
   }
 ]

@@ -42,7 +42,7 @@ app.use(express.json());
 //];
 
 app.get("/user",(req,res) => {
-    res.json(user);
+    res.json(users);
 });
 
 app.get("/",(req,res) => {
@@ -59,10 +59,28 @@ app.get("/listings/:id", (req,res) => {
     res.json(listing);
 });
 
-app.put("/listings/:id", (req, res) => {
+app.put("/listings/:id", authenticateToken, (req, res) => {
     const id = parseInt(req.params.id);
     const index = listings.findIndex(listing => listing.id === id);
-    const updatedListing = req.body;
+    const userId = req.user.id;
+    if (index === -1) {
+        return res.status(404).json({
+            message: "Listing not found"
+        });
+    }
+    const listing = listings[index];
+
+    if (listing.userId !== userId) {
+        return res.status(403).json({
+            message: "You are not allowed to update this listing"
+        });
+    }
+    
+    const updatedListing = {
+        ...req.body,
+        id: listings[index].id,
+        userId: listings[index].userId
+};
     listings[index] = updatedListing;
     fs.writeFileSync("./listings.json", JSON.stringify(listings, null, 2));
     res.json(updatedListing);
