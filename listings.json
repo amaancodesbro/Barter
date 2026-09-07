@@ -5,5 +5,12 @@
     "userId": 1,
     "condition": "Excellent",
     "id": 1
+  },
+  {
+    "item": "PS5",
+    "owner": "Amaan",
+    "userId": 1,
+    "condition": "Excellent",
+    "id": 2
   }
 ]

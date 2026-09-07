@@ -102,8 +102,24 @@ app.delete("/listings/:id", authenticateToken, (req,res) => {
 
 });
 
-app.post("/listings", (req,res) => {
-    const newListing = req.body;
+app.post("/listings", authenticateToken, (req,res) => {
+    const userId = req.user.id;
+    const user = users.find(user => user.id === userId);
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
+    const newId = listings.length > 0
+        ? Math.max(...listings.map(listing => listing.id)) + 1
+        : 1;
+    const newListing = {
+        ...req.body,
+        id: newId,
+        userId: userId,
+        owner: user.name
+
+    };
     if (!newListing.item || !newListing.owner || !newListing.condition) {
         return res.status(400).json({
             message: "Item, owner and condition are required"
@@ -117,6 +133,23 @@ app.post("/listings", (req,res) => {
 
 app.post("/users/register", (req, res) => {
     const newUser = req.body;
+    const existingUser = users.find(user => user.email === newUser.email);
+
+    if (existingUser) {
+        return res.status(400).json({
+            message: "Email already registered"
+        });
+    }
+    const newId = users.length > 0
+        ? Math.max(...users.map(user => user.id)) + 1
+        : 1;
+    if (!newUser.name || !newUser.email || !newUser.password) {
+        return res.status(400).json({
+            message: "Name, email and password are required"
+        });
+    }
+    newUser.id = newId;
+    
     users.push(newUser);
     fs.writeFileSync("./users.json", JSON.stringify(users, null, 2));
     res.json(newUser);
