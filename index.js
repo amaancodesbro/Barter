@@ -56,6 +56,11 @@ app.get("/listings",(req,res) => {
 app.get("/listings/:id", (req,res) => {
     const id = parseInt(req.params.id);
     const listing = listings.find(listing => listing.id === id);
+    if (!listing) {
+        return res.status(404).json({
+            message:"listing not found"
+        });
+    }
     res.json(listing);
 });
 
@@ -79,7 +84,10 @@ app.put("/listings/:id", authenticateToken, (req, res) => {
     const updatedListing = {
         ...req.body,
         id: listings[index].id,
-        userId: listings[index].userId
+        userId: listings[index].userId,
+        owner: listing.owner,
+        status: listing.status
+
 };
     listings[index] = updatedListing;
     fs.writeFileSync("./listings.json", JSON.stringify(listings, null, 2));
@@ -90,9 +98,14 @@ app.delete("/listings/:id", authenticateToken, (req,res) => {
     const id = parseInt(req.params.id);
     const userId = req.user.id;
     const listing = listings.find(listing => listing.id === id);
+    if (!listing) {
+        return res.status(404).json({
+            message: "Listing not found"
+        });
+    }
     if (listing.userId !== userId) {
         return res.sendStatus(403);
-}
+    }
     const index = listings.findIndex(listing => listing.id === id);
     listings.splice(index, 1);
     fs.writeFileSync("./listings.json", JSON.stringify(listings, null, 2));
@@ -117,7 +130,8 @@ app.post("/listings", authenticateToken, (req,res) => {
         ...req.body,
         id: newId,
         userId: userId,
-        owner: user.name
+        owner: user.name,
+        status: "available"
 
     };
     if (!newListing.item || !newListing.owner || !newListing.condition) {
@@ -149,7 +163,7 @@ app.post("/users/register", (req, res) => {
         });
     }
     newUser.id = newId;
-    
+
     users.push(newUser);
     fs.writeFileSync("./users.json", JSON.stringify(users, null, 2));
     res.json(newUser);
@@ -185,6 +199,11 @@ app.post("/swap-requests",authenticateToken, (req, res) => {
             message: "Listing not found"
         });
     }
+    if (listing.status === "swapped") {
+        return res.status(400).json({
+            message: "This listing has already been swapped"
+        });
+    }
     const receiverId = listing.userId;
     const existingRequest = swapRequests.find(
     request => request.senderId === senderId &&
@@ -201,8 +220,12 @@ app.post("/swap-requests",authenticateToken, (req, res) => {
             message: "You cannot request your own listing" 
         });
     }
+    const newId = swapRequests.length > 0
+        ? Math.max(...swapRequests.map(request => request.id)) + 1
+        : 1;
+
     const newRequest = {
-        id: swapRequests.length + 1,
+        id: newId,
         senderId,
         receiverId,
         listingId,
@@ -216,10 +239,11 @@ app.post("/swap-requests",authenticateToken, (req, res) => {
 
 app.get("/swap-requests", authenticateToken, (req, res) => {
     const userId = req.user.id;
-    const receivedRequests = swapRequests.filter(
-         request => request.receiverId === userId
+    const userRequests = swapRequests.filter(
+        request => request.receiverId === userId ||
+                   request.senderId === userId
     );
-    res.json(receivedRequests);
+    res.json(userRequests);
 
 });
 
@@ -248,12 +272,19 @@ app.put("/swap-requests/:id", authenticateToken, (req, res) => {
             message: "Status must be accepted or rejected"
         });
     }
-    
+
     request.status = status;
+    if (status === "accepted") {
+        const listing = listings.find(listing => listing.id === request.listingId);
+
+        if (listing) {
+            listing.status = "swapped";
+        }
+    }
 
 
     fs.writeFileSync(
-        "./swapRequests.json",
+        "./listings.json",
         JSON.stringify(swapRequests, null, 2)
 );
 res.json(request);

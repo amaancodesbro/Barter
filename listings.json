@@ -4,13 +4,15 @@
     "owner": "Amaan",
     "userId": 1,
     "condition": "Excellent",
-    "id": 1
+    "id": 1,
+    "status": "available"
   },
   {
     "item": "PS5",
     "owner": "Amaan",
     "userId": 1,
     "condition": "Excellent",
-    "id": 2
+    "id": 2,
+    "status": "available"
   }
 ]
