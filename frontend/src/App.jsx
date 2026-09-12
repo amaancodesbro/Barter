@@ -62,10 +62,17 @@ function App() {
 
         {/* 3D HERO BOX */}
         <div className="hero-box">
+          <div className="crate-side"></div>
+          <div className="crate-bottom"></div>
+          <div className="crate-bolt bolt-1"></div>
+          <div className="crate-bolt bolt-2"></div>
+          <div className="crate-bolt bolt-3"></div>
+          <div className="crate-bolt bolt-4"></div>
 
           <div className="box-label">
             SNEAKERS
           </div>
+          
 
           <div className="product-image">
             <img src="/assets/hero-sneaker.png" alt="Sneakers" />
