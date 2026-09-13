@@ -5,12 +5,14 @@ const users = JSON.parse(fs.readFileSync("./users.json"));
 const swapRequests = JSON.parse(fs.readFileSync("./swapRequests.json"));
 
 const express = require ("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("./auth");
 const Listing = require("./models/listings");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 

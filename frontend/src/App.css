@@ -414,8 +414,17 @@ input {
 /* ================= PRODUCTS ================= */
 
 .products-section {
-  padding: 55px 5% 75px;
   position: relative;
+  padding: 55px 5% 80px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3, 8, 16, 0.15),
+      rgba(3, 8, 16, 0.92)
+    );
+
+  z-index: 5;
 }
 
 .section-title {
@@ -460,49 +469,156 @@ input {
 /* ================= PRODUCT BOX ================= */
 
 .product-card {
-  min-height: 235px;
-
+  min-height: 250px;
   position: relative;
+  overflow: hidden;
 
-  padding: 13px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    linear-gradient(
+      145deg,
+      #20242d,
+      #11151d 55%,
+      #090d14
+    );
 
-  
-
-  border: 4px solid #101216;
-
+  border: 3px solid #101010;
   box-shadow:
-    inset 0 0 0 3px rgba(255, 255, 255, 0.18),
-    inset 0 0 18px rgba(255, 255, 255, 0.12),
-    inset 0 -12px 0 rgba(0, 0, 0, 0.28),
-    18px 18px #02060b,
-    30px 35px 45px rgba(0, 0, 0, 0.65);
-
-  overflow: visible;
+    7px 7px 0 #02050a,
+    12px 14px 20px rgba(0,0,0,0.45);
 
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
-      background-image:
-  repeating-linear-gradient(
-    0deg,
-    rgba(255,255,255,0.08) 0px,
-    rgba(255,255,255,0.08) 1px,
-    transparent 1px,
-    transparent 4px
-  ),
-  repeating-linear-gradient(
-    90deg,
-    rgba(0,0,0,0.08) 0px,
-    rgba(0,0,0,0.08) 1px,
-    transparent 1px,
-    transparent 5px
-  ),
-  linear-gradient(
-    145deg,
-    #aaa0a7,
-    #625962 45%,
-    #28252b
-  );
+
+  transform: translateY(0);
+}
+
+.product-card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+
+  border: 2px solid rgba(255,255,255,0.1);
+
+  pointer-events: none;
+}
+
+.product-card:hover {
+  transform: translateY(-8px) rotate(-1deg);
+
+  box-shadow:
+    9px 9px 0 #02050a,
+    15px 18px 25px rgba(0,0,0,0.6);
+}
+
+.product-name {
+  position: relative;
+  z-index: 2;
+
+  padding: 16px 12px 10px;
+
+  font-size: 13px;
+  letter-spacing: 1px;
+
+  color: #f4f1e8;
+
+  text-shadow:
+    2px 2px 0 #000;
+}
+
+.product-placeholder {
+  height: 155px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  z-index: 2;
+
+  font-size: 60px;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(255,255,255,0.08),
+      transparent 60%
+    );
+}
+
+.product-placeholder img {
+  width: 145px;
+  height: 145px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(8px 10px 0 rgba(0,0,0,0.5));
+}
+
+.tag {
+  position: absolute;
+  top: 92px;
+  right: 8px;
+
+  z-index: 5;
+
+  padding: 7px 8px;
+
+  font-size: 8px;
+
+  border: 2px solid #111;
+  box-shadow: 3px 3px 0 #000;
+
+  transform: rotate(-4deg);
+}
+
+.tag.like-new {
+  background: #f2d83d;
+  color: #111;
+}
+
+.tag.good {
+  background: #dedbd2;
+  color: #111;
+}
+
+.tag.used {
+  background: #ef4426;
+  color: #fff;
+}
+
+.card-bottom {
+  position: absolute;
+
+  bottom: 12px;
+  left: 12px;
+
+  z-index: 3;
+
+  font-size: 8px;
+  color: #aaa;
+}
+
+.product-card p {
+  position: absolute;
+
+  bottom: 12px;
+  right: 12px;
+
+  margin: 0;
+
+  z-index: 3;
+
+  font-size: 7px;
+  color: #777;
 }
 
 /* dark product chamber */
@@ -577,14 +693,16 @@ input {
 
 .product-name {
   position: relative;
-  z-index: 5;
+  z-index: 2;
 
-  color: #071426;
+  padding: 16px 12px 10px;
 
-  font-size: 7px;
-  line-height: 1.5;
+  font-size: 13px;
+  letter-spacing: 1px;
 
-  max-width: 70%;
+  color: #f4f1e8;
+
+  text-shadow: 2px 2px 0 #000;
 }
 
 .product-placeholder {

@@ -1,6 +1,15 @@
+import { useEffect, useState } from "react";
 import "./App.css";
+import ListingCard from "./components/ListingCard";
 
 function App() {
+  const [listings, setListings] = useState([]);
+  useEffect(() => {
+  fetch("http://localhost:3000/listings")
+    .then((response) => response.json())
+    .then((data) => setListings(data));
+}, []);
+
   return (
     <div className="app">
 
@@ -104,55 +113,22 @@ function App() {
 
         <div className="product-grid">
 
-          <div className="product-card">
-            <div className="product-name">IPHONE 15</div>
-           <div className="product-placeholder">
-             <img src="/iphone15.png" alt="iPhone 15" />
-           </div>
-            <div className="tag like-new">LIKE NEW</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>TECH</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">PS5</div>
-            <div className="product-placeholder">🎮</div>
-            <div className="tag good">GOOD COND.</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>GAMING</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">NIKE DUNKS</div>
-            <div className="product-placeholder">👟</div>
-            <div className="tag used">USED</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>FASHION</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">MACBOOK AIR</div>
-            <div className="product-placeholder">💻</div>
-            <div className="tag good">GOOD COND.</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>TECH</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">GUITAR</div>
-            <div className="product-placeholder">🎸</div>
-            <div className="tag used">USED</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>MUSIC</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">DYSON AIRWRAP</div>
-            <div className="product-placeholder">💄</div>
-            <div className="tag like-new">LIKE NEW</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>BEAUTY</p>
-          </div>
+        {listings.map((listing) => (
+  <ListingCard
+    key={listing.id}
+    item={listing.item}
+    condition={listing.condition}
+    category={listing.category}
+    image={listing.image}
+   tagClass={
+  listing.condition === "Excellent"
+    ? "like-new"
+    : listing.condition === "Good"
+      ? "good"
+      : "used"
+   }
+  />
+))}
 
         </div>
 
