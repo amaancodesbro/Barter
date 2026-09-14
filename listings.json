@@ -15,6 +15,7 @@
     "userId": 1,
     "condition": "Excellent",
     "category": "GAMING",
+    "image": "/assets/ps5.png",
     "id": 2,
     "status": "available"
   }

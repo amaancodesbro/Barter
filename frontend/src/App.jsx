@@ -1,17 +1,40 @@
+import ListingDetails from "./ListingDetails";
+import Login from "./Login";
+import Browse from "./Browse";
+
 import { useEffect, useState } from "react";
+
 import "./App.css";
 import ListingCard from "./components/ListingCard";
 
 function App() {
   const [listings, setListings] = useState([]);
-  useEffect(() => {
-  fetch("http://localhost:3000/listings")
-    .then((response) => response.json())
-    .then((data) => setListings(data));
-}, []);
+  const [selectedListingId, setSelectedListingId] = useState(null);
+  const [showLogin, setShowLogin] = useState(false);
+  const [token, setToken] = useState(
+  localStorage.getItem("token")
+);
 
+  useEffect(() => {
+    fetch("http://localhost:3000/listings")
+      .then((response) => response.json())
+      .then((data) => setListings(data));
+  }, []);
+
+ if (showLogin) {
   return (
-    <div className="app">
+    <div className="app login-app">
+      <Login
+        onLogin={(token) => {
+          setShowLogin(false);
+        }}
+      />
+    </div>
+  );
+}
+
+return (
+  <div className="app">
 
       {/* NAVBAR */}
       <nav className="navbar">
@@ -31,8 +54,17 @@ function App() {
             🔍 SEARCH ITEMS...
           </div>
 
-          <a href="#">[ LOGIN ]</a>
-          <button>[ REGISTER ]</button>
+{token ? (
+<button
+  onClick={() => {
+    localStorage.removeItem("token");
+    setToken(null);
+  }}
+>
+  [ LOG OUT ]
+</button>) : (
+  <button onClick={() => setShowLogin(true)}>[ LOGIN ]</button>
+)}              <button>[ REGISTER ]</button>
         </div>
       </nav>
 
@@ -111,29 +143,40 @@ function App() {
           <span>[ VIEW ALL → ]</span>
         </div>
 
-        <div className="product-grid">
-
-        {listings.map((listing) => (
-  <ListingCard
-    key={listing.id}
-    item={listing.item}
-    condition={listing.condition}
-    category={listing.category}
-    image={listing.image}
-   tagClass={
-  listing.condition === "Excellent"
-    ? "like-new"
-    : listing.condition === "Good"
-      ? "good"
-      : "used"
-   }
-  />
-))}
-
-        </div>
-
+       <div className="product-grid">
+  {listings.map((listing) => (
+    <ListingCard
+      key={listing.id}
+      item={listing.item}
+      condition={listing.condition}
+      category={listing.category}
+      image={listing.image}
+      tagClass={
+        listing.condition === "Excellent"
+          ? "like-new"
+          : listing.condition === "Good"
+            ? "good"
+            : "used"
+      }
+    />
+  ))}
+</div>
       </section>
 
+{showLogin ? (
+  <Login
+    onLogin={(token) => {
+      setShowLogin(false);
+    }}
+  />
+) : selectedListingId ? (
+  <ListingDetails
+    listingId={selectedListingId}
+    onBack={() => setSelectedListingId(null)}
+  />
+) : (
+  <Browse onSelectListing={setSelectedListingId} />
+)}
 
       {/* SUGGESTED */}
       <section className="products-section">

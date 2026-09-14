@@ -1,7 +1,17 @@
-function ListingCard({ item, condition, category, image, tagClass }) {
+function ListingCard({
+  item,
+  condition,
+  category,
+  image,
+  tagClass,
+  onClick,
+}) {
   return (
-    <div className="product-card">
-
+    <div
+      className="product-card"
+      onClick={onClick}
+      style={{ cursor: onClick ? "pointer" : "default" }}
+    >
       <div className="product-name">
         {item}
       </div>
@@ -25,7 +35,6 @@ function ListingCard({ item, condition, category, image, tagClass }) {
       <p>
         {category}
       </p>
-
     </div>
   );
 }
