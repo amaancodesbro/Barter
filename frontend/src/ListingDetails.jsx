@@ -1,20 +1,12 @@
 import { useEffect, useState } from "react";
 
-function ListingDetails({ listingId, onBack }) {
+function ListingDetails({ listingId,token,onBack }) {
   const [listing, setListing] = useState(null);
   const [showOffer, setShowOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [myItems, setMyItems] = useState([]);
 
- const myItems = [
-  {
-    item: "PS5",
-    image: "/assets/ps5.png",
-  },
-  {
-    item: "IPHONE 15",
-    image: "/assets/iphone15.png",
-  },
-];
+
 
   useEffect(() => {
     fetch(`http://localhost:3000/listings/${listingId}`)
@@ -22,9 +14,27 @@ function ListingDetails({ listingId, onBack }) {
       .then((data) => setListing(data));
   }, [listingId]);
 
-  if (!listing) {
-    return <div className="listing-loading">LOADING...</div>;
-  }
+  
+  useEffect(() => {
+      if (!token) return;
+      
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const userId = payload.id;
+      
+      fetch("http://localhost:3000/listings")
+      .then((response) => response.json())
+      .then((data) => {
+          const myListings = data.filter(
+              (listing) => listing.userId === userId
+            );
+            
+            setMyItems(myListings);
+        });
+    }, [token]);
+    
+    if (!listing) {
+      return <div className="listing-loading">LOADING...</div>;
+    }
 
   return (
     <section className="listing-details">
@@ -184,13 +194,41 @@ function ListingDetails({ listingId, onBack }) {
               ← CANCEL
             </button>
 
-            <button
-              className="swap-send"
-              disabled={!selectedOffer}
-            >
-              SEND SWAP REQUEST →
-            </button>
+           <button
+  className="swap-send"
+  disabled={!selectedOffer}
+  onClick={async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/swap-requests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            listingId: listing.id,
+            offeredItem: selectedOffer.item,
+          }),
+        }
+      );
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "FAILED TO SEND REQUEST.");
+        return;
+      }
+
+      alert("SWAP REQUEST SENT!");
+    } catch (error) {
+      alert("SERVER CONNECTION FAILED.");
+    }
+  }}
+>
+  SEND SWAP REQUEST →
+</button>
           </div>
 
         </div>

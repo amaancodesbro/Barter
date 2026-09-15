@@ -1,10 +1,10 @@
 [
+ 
   {
-    "id": 1,
+    "id": 2,
     "senderId": 2,
     "receiverId": 1,
     "listingId": 1,
-    "offeredItem": "PS5",
-    "status": "accepted"
-  }
+    "offeredItem": "MacBook Air",
+    "status": "accepted"  }
 ]

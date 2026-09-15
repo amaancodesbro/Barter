@@ -1,3 +1,4 @@
+import SwapRequests from "./SwapRequests";
 import ListingDetails from "./ListingDetails";
 import Login from "./Login";
 import Browse from "./Browse";
@@ -8,6 +9,7 @@ import "./App.css";
 import ListingCard from "./components/ListingCard";
 
 function App() {
+  const [showRequests, setShowRequests] = useState(false);
   const [listings, setListings] = useState([]);
   const [selectedListingId, setSelectedListingId] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
@@ -26,6 +28,7 @@ function App() {
     <div className="app login-app">
       <Login
         onLogin={(token) => {
+            setToken(token);
           setShowLogin(false);
         }}
       />
@@ -64,7 +67,14 @@ return (
   [ LOG OUT ]
 </button>) : (
   <button onClick={() => setShowLogin(true)}>[ LOGIN ]</button>
-)}              <button>[ REGISTER ]</button>
+)}  
+
+<button onClick={() => setShowRequests(true)}>
+  [ SWAP REQUESTS ]
+</button>
+
+
+      <button>[ REGISTER ]</button>
         </div>
       </nav>
 
@@ -165,13 +175,19 @@ return (
 
 {showLogin ? (
   <Login
-    onLogin={(token) => {
-      setShowLogin(false);
-    }}
+    oonLogin={(token) => {
+  setToken(token);
+  setShowLogin(false);
+}}
+  />
+) : showRequests ? (
+  <SwapRequests
+    token={token}
   />
 ) : selectedListingId ? (
   <ListingDetails
     listingId={selectedListingId}
+    token={token}
     onBack={() => setSelectedListingId(null)}
   />
 ) : (
