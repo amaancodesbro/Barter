@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ListingCard from "./components/ListingCard";
 
 function Browse({ onSelectListing }) {
-    console.log("BROWSE COMPONENT LOADED");
+    //console.log("BROWSE COMPONENT LOADED");
   const [listings, setListings] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
@@ -11,7 +11,7 @@ function Browse({ onSelectListing }) {
     fetch("http://localhost:3000/listings")
       .then((response) => response.json())
       .then((data) => {
-console.log("LISTINGS FROM BACKEND:", JSON.stringify(data, null, 2));
+//console.log("LISTINGS FROM BACKEND:", JSON.stringify(data, null, 2));
   setListings(data);
 });
   }, []);

@@ -1,3 +1,4 @@
+import CreateListing from "./CreateListing";
 import SwapRequests from "./SwapRequests";
 import ListingDetails from "./ListingDetails";
 import Login from "./Login";
@@ -13,6 +14,7 @@ function App() {
   const [listings, setListings] = useState([]);
   const [selectedListingId, setSelectedListingId] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
+  const [showCreateListing, setShowCreateListing] = useState(false);
   const [token, setToken] = useState(
   localStorage.getItem("token")
 );
@@ -71,6 +73,11 @@ return (
 
 <button onClick={() => setShowRequests(true)}>
   [ SWAP REQUESTS ]
+</button>
+
+
+<button onClick={() => setShowCreateListing(true)}>
+  [ CREATE LISTING ]
 </button>
 
 
@@ -180,10 +187,13 @@ return (
   setShowLogin(false);
 }}
   />
-) : showRequests ? (
-  <SwapRequests
+) : showCreateListing ? (
+  <CreateListing
     token={token}
+    onCreated={() => setShowCreateListing(false)}
   />
+) : showRequests ? (
+  <SwapRequests token={token} />
 ) : selectedListingId ? (
   <ListingDetails
     listingId={selectedListingId}
@@ -193,6 +203,7 @@ return (
 ) : (
   <Browse onSelectListing={setSelectedListingId} />
 )}
+
 
       {/* SUGGESTED */}
       <section className="products-section">

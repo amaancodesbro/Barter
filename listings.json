@@ -28,5 +28,25 @@
     "image": "/assets/macbookair.png",
     "id": 3,
     "status": "available"
+  },
+  {
+    "item": "Airpods Pro",
+    "condition": "Excellent",
+    "category": "TECH",
+    "image": "/assets/airpods.png",
+    "id": 4,
+    "userId": 1,
+    "owner": "Amaan",
+    "status": "available"
+  },
+  {
+    "item": "Airpods max",
+    "condition": "Good",
+    "category": "TECH",
+    "image": "/assets/airpodsmax.png",
+    "id": 5,
+    "userId": 1,
+    "owner": "Amaan",
+    "status": "available"
   }
 ]
