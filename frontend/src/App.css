@@ -50,13 +50,19 @@ input {
 }
 
 .logo {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -2px;
   color: #f5df00;
-  font-size: 24px;
-  text-shadow: 3px 3px #000;
+  text-shadow:
+    4px 4px #000,
+    6px 6px rgba(0, 0, 0, 0.35);
 }
 
 .logo span {
-  font-size: 9px;
+  font-size: 11px;
+  vertical-align: top;
+  margin-left: 4px;
 }
 
 .nav-links {
@@ -220,21 +226,31 @@ input {
 }
 
 .browse-button {
-  margin-top: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  padding: 17px 23px;
+  margin-top: 28px;
+  padding: 18px 32px;
 
   background: #f5df00;
   color: #071426;
 
   border: 3px solid #111;
 
-  font-size: 9px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1px;
 
-  box-shadow: 6px 6px #000;
+  box-shadow: 7px 7px 0 #000;
 
   cursor: pointer;
   transition: 0.2s;
+}
+
+.browse-button:hover {
+  transform: translate(4px, 4px);
+  box-shadow: 3px 3px 0 #000;
 }
 
 .browse-button:hover {
@@ -1362,6 +1378,12 @@ body,
   min-height: 100vh;
   padding: 110px 5% 100px;
 
+  background-image: url("/assets/barter-world.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+
   background:
     linear-gradient(
       180deg,
@@ -2144,18 +2166,19 @@ body,
   display: inline-block;
 }
 /* ================================
-   SWAP REQUESTS
+   SWAP REQUESTS — TRADE TERMINAL
 ================================ */
 
 .swap-requests {
   min-height: 100vh;
   padding: 120px 7% 100px;
+
   box-sizing: border-box;
 
   background:
     linear-gradient(
       rgba(3, 12, 28, 0.72),
-      rgba(3, 12, 28, 0.88)
+      rgba(3, 12, 28, 0.90)
     ),
     url("/assets/barter-world.png");
 
@@ -2164,57 +2187,147 @@ body,
   background-attachment: fixed;
 
   color: #f4f1e8;
+
+  position: relative;
+  overflow: hidden;
 }
+
+/* TOP TERMINAL LABEL */
 
 .swap-requests > p:first-child {
   color: #ffe500;
+
   font-family: "Press Start 2P", monospace;
-  font-size: 13px;
+  font-size: 12px;
+
   letter-spacing: 2px;
-  margin-bottom: 22px;
+
+  margin: 0 0 25px;
+
+  text-shadow:
+    0 0 6px #ffe500,
+    0 0 14px rgba(255, 229, 0, 0.7);
 }
+
+/* PAGE TITLE */
 
 .swap-requests h1 {
   font-family: "Press Start 2P", monospace;
+
   font-size: clamp(32px, 5vw, 64px);
-  margin: 0 0 45px;
+
+  margin: 0 0 50px;
+
   color: #f4f1e8;
-  text-shadow: 4px 4px 0 #000;
+
+  text-shadow:
+    4px 4px 0 #000;
 }
+
+/* REQUEST TERMINAL */
 
 .swap-request-card {
+  position: relative;
+
   width: 100%;
   max-width: 1100px;
+
   box-sizing: border-box;
 
-  margin-bottom: 24px;
-  padding: 28px;
+  margin-bottom: 28px;
+  padding: 32px;
 
-  background: rgba(5, 8, 15, 0.82);
-  border: 2px solid rgba(255, 229, 0, 0.55);
+  background: rgba(4, 7, 14, 0.78);
+
+  border: 2px solid rgba(255, 229, 0, 0.65);
 
   box-shadow:
-    8px 8px 0 rgba(0, 0, 0, 0.7),
-    0 0 20px rgba(255, 229, 0, 0.12);
+    0 0 8px rgba(255, 229, 0, 0.35),
+    0 0 25px rgba(255, 229, 0, 0.12),
+    8px 8px 0 rgba(0, 0, 0, 0.65);
+
+  backdrop-filter: blur(4px);
 }
+
+/* TERMINAL LIGHT BARS */
+
+.swap-request-card::before,
+.swap-request-card::after {
+  content: "";
+
+  position: absolute;
+
+  height: 2px;
+
+  background: #ffe500;
+
+  box-shadow:
+    0 0 8px #ffe500,
+    0 0 18px #ffe500;
+}
+
+.swap-request-card::before {
+  width: 25%;
+
+  top: -2px;
+  left: 6%;
+}
+
+.swap-request-card::after {
+  width: 18%;
+
+  bottom: -2px;
+  right: 8%;
+}
+
+/* REQUEST TITLE */
 
 .swap-request-card h2 {
   font-family: "Press Start 2P", monospace;
+
   color: #ffe500;
-  font-size: 18px;
-  margin: 0 0 24px;
+
+  font-size: 17px;
+
+  margin: 0 0 25px;
+
+  text-shadow:
+    0 0 6px #ffe500;
 }
+
+/* REQUEST INFORMATION */
 
 .swap-request-card p {
   font-family: "Press Start 2P", monospace;
-  font-size: 12px;
+
+  font-size: 11px;
+
   line-height: 2;
-  margin: 6px 0;
+
+  margin: 7px 0;
+
+  color: #f4f1e8;
 }
 
 .swap-request-card strong {
   color: #ffe500;
+
+  text-shadow:
+    0 0 5px rgba(255, 229, 0, 0.6);
 }
+
+/* STATUS TEXT */
+
+.swap-request-card p:last-child {
+  margin-top: 22px;
+
+  color: #ffe500;
+
+  letter-spacing: 1px;
+}
+
+/* KEEP NAV ITEMS FROM BREAKING */
+
 .navbar button,
 .nav-links a {
   white-space: nowrap;
@@ -2536,19 +2649,19 @@ body,
     padding: 10px 9px;
   }
 }
-/* ================================
-   CREATE LISTING
-================================ */
+/* =========================
+   CREATE LISTING WORLD
+========================= */
 
 .create-listing-page {
   min-height: 100vh;
-  box-sizing: border-box;
-  padding: 130px 7% 100px;
+  position: relative;
+  overflow: hidden;
 
   background:
     linear-gradient(
-      rgba(3, 12, 28, 0.78),
-      rgba(3, 12, 28, 0.94)
+      rgba(3, 12, 28, 0.72),
+      rgba(3, 12, 28, 0.88)
     ),
     url("/assets/barter-world.png");
 
@@ -2556,42 +2669,95 @@ body,
   background-position: center;
   background-attachment: fixed;
 
-  color: #f4f1e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 120px 7% 80px;
+  box-sizing: border-box;
 }
+
+/* CREATE TERMINAL */
 
 .create-listing-card {
-  width: min(760px, 100%);
-  margin: 0 auto;
-  padding: 45px;
+  position: relative;
+
+  width: min(720px, 90%);
+  padding: 50px;
+
   box-sizing: border-box;
 
-  background: rgba(5, 8, 15, 0.9);
-  border: 2px solid rgba(255, 229, 0, 0.7);
+  background: rgba(4, 7, 14, 0.72);
+
+  border: 2px solid rgba(255, 45, 32, 0.75);
 
   box-shadow:
-    8px 8px 0 rgba(0, 0, 0, 0.75),
-    0 0 30px rgba(255, 229, 0, 0.12);
+    0 0 8px rgba(255, 45, 32, 0.9),
+    0 0 25px rgba(255, 45, 32, 0.55),
+    0 0 70px rgba(255, 45, 32, 0.25);
+
+  backdrop-filter: blur(4px);
 }
 
-.create-listing-card > p:first-child {
-  margin: 0 0 18px;
+/* TERMINAL LIGHT BARS */
 
-  color: #ffe500;
+.create-listing-card::before,
+.create-listing-card::after {
+  content: "";
+
+  position: absolute;
+
+  height: 2px;
+
+  background: #ff2d20;
+
+  box-shadow:
+    0 0 8px #ff2d20,
+    0 0 20px #ff2d20;
+}
+
+.create-listing-card::before {
+  width: 35%;
+  top: -2px;
+  left: 8%;
+}
+
+.create-listing-card::after {
+  width: 22%;
+  bottom: -2px;
+  right: 10%;
+}
+
+/* HEADER */
+
+.create-listing-card > p:first-child {
+  margin: 0 0 25px;
+
+  color: #ff2d20;
+
   font-family: "Press Start 2P", monospace;
-  font-size: 11px;
+  font-size: 12px;
+
   letter-spacing: 2px;
+
+  text-shadow:
+    0 0 6px #ff2d20,
+    0 0 14px rgba(255, 45, 32, 0.7);
 }
 
 .create-listing-card h1 {
   margin: 0 0 35px;
 
-  font-family: "Press Start 2P", monospace;
-  font-size: clamp(30px, 5vw, 58px);
-  line-height: 1.1;
-
   color: #f4f1e8;
-  text-shadow: 5px 5px 0 #000;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(30px, 5vw, 52px);
+
+  text-shadow:
+    4px 4px 0 #000;
 }
+
+/* FORM */
 
 .create-listing-card form {
   display: flex;
@@ -2599,65 +2765,280 @@ body,
   gap: 16px;
 }
 
+/* INPUTS + SELECTS */
+
 .create-listing-card input,
 .create-listing-card select {
   width: 100%;
   box-sizing: border-box;
 
-  padding: 17px 18px;
+  padding: 16px 18px;
 
-  background: #080b12;
-  border: 1px solid rgba(255, 229, 0, 0.55);
+  background: rgba(0, 0, 0, 0.65);
+
+  border: 1px solid rgba(255, 45, 32, 0.65);
 
   color: #f4f1e8;
 
   font-family: "Press Start 2P", monospace;
-  font-size: 10px;
+  font-size: 11px;
 
   outline: none;
+
+  box-shadow:
+    inset 0 0 12px rgba(255, 45, 32, 0.08),
+    0 0 8px rgba(255, 45, 32, 0.15);
+}
+
+.create-listing-card input::placeholder {
+  color: rgba(244, 241, 232, 0.45);
 }
 
 .create-listing-card input:focus,
 .create-listing-card select:focus {
-  border-color: #ffe500;
-  box-shadow: 0 0 15px rgba(255, 229, 0, 0.2);
+  border-color: #ff2d20;
+
+  box-shadow:
+    0 0 8px rgba(255, 45, 32, 0.7),
+    0 0 22px rgba(255, 45, 32, 0.3);
 }
+
+/* DROPDOWN */
 
 .create-listing-card select {
   cursor: pointer;
 }
 
+.create-listing-card select option {
+  background: #080b12;
+  color: #f4f1e8;
+}
+
+/* CREATE BUTTON */
+
 .create-listing-card form button {
-  margin-top: 10px;
+  margin-top: 8px;
+
   padding: 18px;
 
-  background: #ffe500;
-  border: 2px solid #ffe500;
+  background: #11151d;
 
-  color: #080b12;
+  border: 2px solid #ff2d20;
+
+  color: #ff2d20;
 
   font-family: "Press Start 2P", monospace;
-  font-size: 11px;
+  font-size: 13px;
 
   cursor: pointer;
-  transition: 0.15s ease;
+
+  box-shadow:
+    0 0 10px rgba(255, 45, 32, 0.55),
+    inset 0 0 12px rgba(255, 45, 32, 0.12);
+
+  transition: all 0.15s ease;
 }
 
 .create-listing-card form button:hover {
-  background: #fff36b;
-  box-shadow: 0 0 20px rgba(255, 229, 0, 0.55);
+  background: #ff2d20;
+  color: #080b12;
+
+  box-shadow:
+    0 0 15px #ff2d20,
+    0 0 35px rgba(255, 45, 32, 0.65);
 }
 
-.create-listing-card form button:active {
-  transform: translate(2px, 2px);
-}
+/* STATUS MESSAGE */
 
 .create-listing-card > p:last-child {
-  margin-top: 22px;
+  margin-top: 20px;
+
+  color: #ff2d20;
 
   font-family: "Press Start 2P", monospace;
   font-size: 9px;
-  line-height: 1.8;
 
-  color: #ffe500;
+  line-height: 2;
+
+  text-shadow:
+    0 0 6px #ff2d20;
+}
+/* =========================
+   REGISTER WORLD
+========================= */
+
+.register-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      rgba(3, 12, 28, 0.72),
+      rgba(3, 12, 28, 0.88)
+    ),
+    url("/assets/barter-world.png");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* REGISTER TERMINAL GLOW */
+
+.register-card {
+  position: relative;
+  width: min(720px, 90%);
+  padding: 50px;
+
+  background: rgba(4, 7, 14, 0.72);
+
+  border: 2px solid rgba(255, 45, 32, 0.75);
+
+  box-shadow:
+    0 0 8px rgba(255, 45, 32, 0.9),
+    0 0 25px rgba(255, 45, 32, 0.55),
+    0 0 70px rgba(255, 45, 32, 0.25);
+
+  backdrop-filter: blur(4px);
+}
+
+.register-card::before,
+.register-card::after {
+  content: "";
+  position: absolute;
+
+  height: 2px;
+
+  background: #ff2d20;
+
+  box-shadow:
+    0 0 8px #ff2d20,
+    0 0 20px #ff2d20;
+}
+
+.register-card::before {
+  width: 35%;
+  top: -2px;
+  left: 8%;
+}
+
+.register-card::after {
+  width: 22%;
+  bottom: -2px;
+  right: 10%;
+}
+
+/* REGISTER TERMINAL FORM */
+
+.register-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-card input {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 16px 18px;
+
+  background: rgba(0, 0, 0, 0.65);
+
+  border: 1px solid rgba(255, 45, 32, 0.65);
+
+  color: #f4f1e8;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+
+  outline: none;
+
+  box-shadow:
+    inset 0 0 12px rgba(255, 45, 32, 0.08),
+    0 0 8px rgba(255, 45, 32, 0.15);
+}
+
+.register-card input:focus {
+  border-color: #ff2d20;
+
+  box-shadow:
+    0 0 8px rgba(255, 45, 32, 0.7),
+    0 0 22px rgba(255, 45, 32, 0.3);
+}
+
+.register-card form button {
+  padding: 18px;
+
+  background: #11151d;
+
+  border: 2px solid #ff2d20;
+
+  color: #ff2d20;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: 13px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 0 10px rgba(255, 45, 32, 0.55),
+    inset 0 0 12px rgba(255, 45, 32, 0.12);
+
+  transition: all 0.15s ease;
+}
+
+.register-card form button:hover {
+  background: #ff2d20;
+  color: #080b12;
+
+  box-shadow:
+    0 0 15px #ff2d20,
+    0 0 35px rgba(255, 45, 32, 0.65);
+}
+
+.register-card > p:first-child {
+  margin: 0 0 25px;
+
+  color: #ff2d20;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  text-shadow:
+    0 0 6px #ff2d20,
+    0 0 14px rgba(255, 45, 32, 0.7);
+}
+
+.register-card h1 {
+  margin: 0 0 35px;
+
+  color: #f4f1e8;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(30px, 5vw, 52px);
+
+  text-shadow:
+    4px 4px 0 #000;
+}
+
+.register-card > p:last-child {
+  margin-top: 20px;
+
+  color: #ff2d20;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: 9px;
+
+  line-height: 2;
+
+  text-shadow:
+    0 0 6px #ff2d20;
 }

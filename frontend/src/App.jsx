@@ -1,20 +1,11 @@
-import CreateListing from "./CreateListing";
-import SwapRequests from "./SwapRequests";
-import ListingDetails from "./ListingDetails";
-import Login from "./Login";
-import Browse from "./Browse";
-
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 import "./App.css";
 import ListingCard from "./components/ListingCard";
 
+
 function App() {
-  const [showRequests, setShowRequests] = useState(false);
   const [listings, setListings] = useState([]);
-  const [selectedListingId, setSelectedListingId] = useState(null);
-  const [showLogin, setShowLogin] = useState(false);
-  const [showCreateListing, setShowCreateListing] = useState(false);
   const [token, setToken] = useState(
   localStorage.getItem("token")
 );
@@ -25,18 +16,7 @@ function App() {
       .then((data) => setListings(data));
   }, []);
 
- if (showLogin) {
-  return (
-    <div className="app login-app">
-      <Login
-        onLogin={(token) => {
-            setToken(token);
-          setShowLogin(false);
-        }}
-      />
-    </div>
-  );
-}
+
 
 return (
   <div className="app">
@@ -48,16 +28,16 @@ return (
         </div>
 
         <div className="nav-links">
-          <a href="#">[ HOME ]</a>
-          <a href="#">[ BROWSE ]</a>
-          <a href="#">[ HOW IT WORKS ]</a>
-          <a href="#">[ ABOUT ]</a>
+      <Link to="/">[ HOME ]</Link>
+      <Link to="/browse">[ BROWSE ]</Link>
+      <Link to="#">[ HOW IT WORKS ]</Link>
+      <Link to="#">[ ABOUT ]</Link>
         </div>
 
         <div className="nav-actions">
-          <div className="search-box">
-            🔍 SEARCH ITEMS...
-          </div>
+         <Link to="/browse" className="search-box">
+           🔍 SEARCH ITEMS...
+         </Link>
 
 {token ? (
 <button
@@ -67,22 +47,26 @@ return (
   }}
 >
   [ LOG OUT ]
-</button>) : (
-  <button onClick={() => setShowLogin(true)}>[ LOGIN ]</button>
-)}  
+</button>
+) : (
+   <Link className="nav-button" to="/login">
+  [ LOGIN ]
+</Link>
+)}
+  
 
-<button onClick={() => setShowRequests(true)}>
+<Link className="nav-button" to="/swaps">
   [ SWAP REQUESTS ]
-</button>
+</Link>
 
-
-<button onClick={() => setShowCreateListing(true)}>
+<Link className="nav-button" to="/create">
   [ CREATE LISTING ]
-</button>
+</Link>
 
-
-      <button>[ REGISTER ]</button>
-        </div>
+<Link className="nav-button" to="/register">
+  [ REGISTER ]
+</Link>    
+   </div>
       </nav>
 
 
@@ -112,9 +96,9 @@ return (
             A MORE INTERESTING WORLD.
           </p>
 
-          <button className="browse-button">
-            [ BROWSE ITEMS → ]
-          </button>
+          <Link to="/browse" className="browse-button">
+         [ BROWSE ITEMS → ]
+          </Link>
         </div>
 
 
@@ -180,29 +164,8 @@ return (
 </div>
       </section>
 
-{showLogin ? (
-  <Login
-    oonLogin={(token) => {
-  setToken(token);
-  setShowLogin(false);
-}}
-  />
-) : showCreateListing ? (
-  <CreateListing
-    token={token}
-    onCreated={() => setShowCreateListing(false)}
-  />
-) : showRequests ? (
-  <SwapRequests token={token} />
-) : selectedListingId ? (
-  <ListingDetails
-    listingId={selectedListingId}
-    token={token}
-    onBack={() => setSelectedListingId(null)}
-  />
-) : (
-  <Browse onSelectListing={setSelectedListingId} />
-)}
+
+
 
 
       {/* SUGGESTED */}

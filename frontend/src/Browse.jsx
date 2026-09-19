@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ListingCard from "./components/ListingCard";
 
-function Browse({ onSelectListing }) {
-    //console.log("BROWSE COMPONENT LOADED");
+function Browse() {
+    const searchInputRef = useRef(null);
+  const navigate = useNavigate();
+
   const [listings, setListings] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("ALL");
+
 
   useEffect(() => {
     fetch("http://localhost:3000/listings")
       .then((response) => response.json())
       .then((data) => {
-//console.log("LISTINGS FROM BACKEND:", JSON.stringify(data, null, 2));
-  setListings(data);
-});
+        setListings(data);
+      });
   }, []);
+  useEffect(() => {
+  searchInputRef.current?.focus();
+}, []);
 
   const filteredListings = listings.filter((listing) => {
     const matchesSearch = listing.item
@@ -32,8 +38,7 @@ function Browse({ onSelectListing }) {
       <div className="browse-header">
         <p className="browse-kicker">[ MARKETPLACE ]</p>
 
-        <h1>BROWSE ITEMS</h1>
-
+<h1>SEARCH ITEMS</h1>
         <p className="browse-description">
           FIND SOMETHING YOU WANT. OFFER SOMETHING YOU HAVE.
         </p>
@@ -41,6 +46,7 @@ function Browse({ onSelectListing }) {
 
       <div className="browse-controls">
         <input
+          ref={searchInputRef}
           type="text"
           placeholder="SEARCH ITEMS..."
           value={search}
@@ -57,9 +63,8 @@ function Browse({ onSelectListing }) {
         {filteredListings.map((listing) => (
           <div
             key={listing.id}
-            onClick={() => onSelectListing(listing.id)}
+            onClick={() => navigate(`/listing/${listing.id}`)}
             style={{ cursor: "pointer" }}
-
           >
             <ListingCard
               item={listing.item}

@@ -1,35 +1,39 @@
 import { useEffect, useState } from "react";
-
-function ListingDetails({ listingId,token,onBack }) {
-  const [listing, setListing] = useState(null);
+import { useParams, useNavigate } from "react-router-dom";
+function ListingDetails({ token }) {
+  const { id } = useParams();
+const navigate = useNavigate();
+const [listing, setListing] = useState(null);
   const [showOffer, setShowOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [myItems, setMyItems] = useState([]);
+  const currentUserId = token
+  ? Number(JSON.parse(atob(token.split(".")[1])).id)
+  : null;
 
 
 
   useEffect(() => {
-    fetch(`http://localhost:3000/listings/${listingId}`)
+     fetch(`http://localhost:3000/listings/${id}`)
       .then((response) => response.json())
       .then((data) => setListing(data));
-  }, [listingId]);
-
+}, [id]);
   
   useEffect(() => {
       if (!token) return;
       
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      const userId = payload.id;
-      
-      fetch("http://localhost:3000/listings")
-      .then((response) => response.json())
-      .then((data) => {
-          const myListings = data.filter(
-              (listing) => listing.userId === userId
-            );
-            
-            setMyItems(myListings);
-        });
+     const payload = JSON.parse(atob(token.split(".")[1]));
+const userId = Number(payload.id);
+
+fetch("http://localhost:3000/listings")
+  .then((response) => response.json())
+  .then((data) => {
+    const myListings = data.filter(
+      (listing) => Number(listing.userId) === userId
+    );
+
+    setMyItems(myListings);
+  });
     }, [token]);
     
     if (!listing) {
@@ -39,10 +43,12 @@ function ListingDetails({ listingId,token,onBack }) {
   return (
     <section className="listing-details">
 
-      <button className="back-button" onClick={onBack}>
-        ← BACK TO MARKETPLACE
-      </button>
-
+     <button
+  className="back-button"
+  onClick={() => navigate("/browse")}
+>
+  ← BACK TO MARKETPLACE
+</button>
       {!showOffer ? (
         <div className="details-card">
 
@@ -75,13 +81,15 @@ function ListingDetails({ listingId,token,onBack }) {
               <span>STATUS</span>
               <strong>{listing.status}</strong>
             </div>
-
-            <button
-              className="swap-button"
-              onClick={() => setShowOffer(true)}
-            >
-              ⇄ START A BARTER
-            </button>
+{listing.status === "available" &&
+  listing.userId !== currentUserId && (
+    <button
+      className="swap-button"
+      onClick={() => setShowOffer(true)}
+    >
+      ⇄ START A BARTER
+    </button>
+  )}
 
           </div>
 
@@ -161,7 +169,7 @@ function ListingDetails({ listingId,token,onBack }) {
 
                 {listing.image ? (
                   <img
-                    src={listing.image}
+                    src={`http://localhost:5173${listing.image}`}
                     alt={listing.item}
                   />
                 ) : (

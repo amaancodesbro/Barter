@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function SwapRequests({ token }) {
   const [requests, setRequests] = useState([]);
+  const [listings, setListings] = useState([]);
 
   useEffect(() => {
     if (!token) return;
@@ -13,6 +14,10 @@ function SwapRequests({ token }) {
     })
       .then((response) => response.json())
       .then((data) => setRequests(data));
+
+    fetch("http://localhost:3000/listings")
+      .then((response) => response.json())
+      .then((data) => setListings(data));
   }, [token]);
 
   const currentUserId = token
@@ -43,8 +48,8 @@ function SwapRequests({ token }) {
       setRequests((currentRequests) =>
         currentRequests.map((request) =>
           request.id === requestId
-? { ...request, status: data.request?.status || status }         
-   : request
+            ? { ...request, status: data.request?.status || status }
+            : request
         )
       );
     } catch (error) {
@@ -56,7 +61,9 @@ function SwapRequests({ token }) {
     <section className="swap-requests">
       <div className="swap-requests-header">
         <p>[ TRADE ACTIVITY ]</p>
+
         <h1>SWAP REQUESTS</h1>
+
         <span>MANAGE YOUR ACTIVE BARTER REQUESTS.</span>
       </div>
 
@@ -69,42 +76,62 @@ function SwapRequests({ token }) {
           {requests.map((request) => {
             const isIncoming = request.receiverId === currentUserId;
 
+            const wantedListing = listings.find(
+              (listing) => listing.id === request.listingId
+            );
+
             return (
-              <div className="swap-request-card" key={request.id}>
+              <div
+                className="swap-request-card"
+                key={request.id}
+              >
                 <div className="request-top">
                   <h2>REQUEST #{request.id}</h2>
 
-                  <span className={`request-status ${request.status}`}>
+                  <span
+                    className={`request-status ${request.status}`}
+                  >
                     {request.status.toUpperCase()}
                   </span>
                 </div>
 
-              <div className="request-info">
-  <div>
-    <span>ROLE</span>
-    <strong>
-      {isIncoming ? "INCOMING" : "OUTGOING"}
-    </strong>
-  </div>
+                <div className="request-info">
+                  <div>
+                    <span>ROLE</span>
 
-  <div>
-    <span>THEY OFFER</span>
-    <strong>{request.offeredItem}</strong>
-  </div>
+                    <strong>
+                      {isIncoming ? "INCOMING" : "OUTGOING"}
+                    </strong>
+                  </div>
 
-  <div>
-    <span>THEY WANT</span>
-    <strong>
-      {request.listingId === 1 ? "iPhone 15" : `LISTING #${request.listingId}`}
-    </strong>
-  </div>
-</div>
+                  <div>
+                    <span>THEY OFFER</span>
+
+                    <strong>
+                      {request.offeredItem}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>THEY WANT</span>
+
+                    <strong>
+                      {wantedListing
+                        ? wantedListing.item
+                        : "UNKNOWN ITEM"}
+                    </strong>
+                  </div>
+                </div>
+
                 {isIncoming && request.status === "pending" && (
                   <div className="request-actions">
                     <button
                       className="accept-request"
                       onClick={() =>
-                        handleDecision(request.id, "accepted")
+                        handleDecision(
+                          request.id,
+                          "accepted"
+                        )
                       }
                     >
                       [ ACCEPT ]
@@ -113,7 +140,10 @@ function SwapRequests({ token }) {
                     <button
                       className="reject-request"
                       onClick={() =>
-                        handleDecision(request.id, "rejected")
+                        handleDecision(
+                          request.id,
+                          "rejected"
+                        )
                       }
                     >
                       [ REJECT ]

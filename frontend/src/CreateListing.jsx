@@ -40,8 +40,9 @@ function CreateListing({ token, onCreated }) {
       setCategory("TECH");
       setImage("");
 
-      onCreated();
-    } catch (error) {
+if (onCreated) {
+  onCreated();
+}    } catch (error) {
       setMessage("SERVER CONNECTION FAILED.");
     }
   };
