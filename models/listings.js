@@ -8,6 +8,7 @@ const listingSchema = new mongoose.Schema({
   condition: String,
   category: String,
   image: String,
+  images: [String],
   status: String
 });
 

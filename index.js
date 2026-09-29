@@ -1,9 +1,10 @@
 require("dotenv").config();
 
-
+const path = require("path");
 const express = require ("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const multer = require("multer");
 const User = require("./models/users");
 const Listing = require("./models/listings");
 const SwapRequest = require("./models/swapRequests");
@@ -17,9 +18,32 @@ const jwt = require("jsonwebtoken");
 const authenticateToken = require("./auth");
 
 const app = express();
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "uploads"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.originalname)}`;
+    cb(null, uniqueName);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed"));
+    }
+  }
+});
 app.use(cors());
 app.use(express.json());
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 //const listings = [
@@ -162,48 +186,57 @@ app.delete("/listings/:id", authenticateToken, async (req, res) => {
         });
     }
 });
+app.post(
+    "/listings",
+    authenticateToken,
+    upload.array("images", 5),
+    async (req, res) => {
+        try {
+            const userId = req.user.id;
 
-app.post("/listings", authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.id;
+            const user = await User.findOne({ id: userId });
 
-        const user = await User.findOne({ id: userId });
+            if (!user) {
+                return res.status(404).json({
+                    message: "User not found"
+                });
+            }
 
-        if (!user) {
-            return res.status(404).json({
-                message: "User not found"
+            const latestListing = await Listing.findOne().sort({ id: -1 });
+            const newId = latestListing ? latestListing.id + 1 : 1;
+
+            const imagePaths = (req.files || []).map(
+                (file) => `/uploads/${file.filename}`
+            );
+
+            const newListing = {
+                ...req.body,
+                id: newId,
+                userId: userId,
+                owner: user.name,
+                status: "available",
+                images: imagePaths
+            };
+
+            if (!newListing.item || !newListing.condition) {
+                return res.status(400).json({
+                    message: "Item and condition are required"
+                });
+            }
+
+            const savedListing = await Listing.create(newListing);
+
+            res.json(savedListing);
+
+        } catch (error) {
+            console.error("Failed to create listing:", error);
+
+            res.status(500).json({
+                message: "Failed to create listing"
             });
         }
-
-        const latestListing = await Listing.findOne().sort({ id: -1 });
-        const newId = latestListing ? latestListing.id + 1 : 1;
-
-        const newListing = {
-            ...req.body,
-            id: newId,
-            userId: userId,
-            owner: user.name,
-            status: "available"
-        };
-
-        if (!newListing.item || !newListing.condition) {
-            return res.status(400).json({
-                message: "Item and condition are required"
-            });
-        }
-
-        const savedListing = await Listing.create(newListing);
-
-        res.json(savedListing);
-
-    } catch (error) {
-        console.error("Failed to create listing:", error);
-
-        res.status(500).json({
-            message: "Failed to create listing"
-        });
     }
-});
+);
 
 app.post("/users/register", async (req, res) => {
     try {
