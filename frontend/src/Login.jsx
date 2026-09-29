@@ -107,6 +107,10 @@ function Login({ onLogin }) {
             {message}
           </p>
         )}
+        <p className="login-register">
+  DON'T HAVE AN ACCOUNT?{" "}
+  <a href="/register">[ REGISTER ]</a>
+</p>
       </div>
       <div className="market-ticker ticker-bottom">
   <div className="ticker-track">

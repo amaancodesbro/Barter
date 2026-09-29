@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+    const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,6 +46,12 @@ function Register() {
 
   return (
     <section className="register-page">
+        <button
+  className="page-back-button"
+  onClick={() => navigate("/")}
+>
+  ← BACK TO HOME
+</button>
       <div className="register-card">
         <p>[ NEW MEMBER ]</p>
 

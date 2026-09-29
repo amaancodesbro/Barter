@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import "./App.css";
 import ListingCard from "./components/ListingCard";
 
 
 function App() {
-  const [listings, setListings] = useState([]);
+ const [listings, setListings] = useState([]);
+ const navigate = useNavigate();
+
+const featuredIds = [1, 2, 3, 4, 5, 16];
   const [token, setToken] = useState(
   localStorage.getItem("token")
 );
@@ -21,54 +26,59 @@ function App() {
 return (
   <div className="app">
 
-      {/* NAVBAR */}
-      <nav className="navbar">
-        <div className="logo">
-          BARTER<span>™</span>
-        </div>
+     {/* NAVBAR */}
+<nav className="navbar">
+ <Link to="/" className="logo">
+  BARTER<span>™</span>
+</Link>
 
-        <div className="nav-links">
-      <Link to="/">[ HOME ]</Link>
-      <Link to="/browse">[ BROWSE ]</Link>
-      <Link to="#">[ HOW IT WORKS ]</Link>
-      <Link to="#">[ ABOUT ]</Link>
-        </div>
+  <div className="nav-links">
+    <Link to="/">[ HOME ]</Link>
+    <Link to="/browse">[ BROWSE ]</Link>
+    <Link to="/how-it-works">[ HOW IT WORKS ]</Link>
+    <Link to="/about">[ ABOUT ]</Link>
+  </div>
 
-        <div className="nav-actions">
-         <Link to="/browse" className="search-box">
-           🔍 SEARCH ITEMS...
-         </Link>
-
-{token ? (
-<button
-  onClick={() => {
-    localStorage.removeItem("token");
-    setToken(null);
+  <div className="nav-search">
+    <span>⌕</span>
+<input
+  type="text"
+  placeholder="SEARCH ITEMS..."
+  onChange={(event) => setSearch(event.target.value)}
+  onKeyDown={(event) => {
+    if (event.key === "Enter" && event.target.value.trim()) {
+      navigate(`/browse?search=${encodeURIComponent(event.target.value.trim())}`);
+    }
   }}
->
-  [ LOG OUT ]
-</button>
-) : (
-   <Link className="nav-button" to="/login">
-  [ LOGIN ]
-</Link>
-)}
-  
+/>
+    <span className="search-shortcut">⌘ K</span>
+  </div>
 
-<Link className="nav-button" to="/swaps">
-  [ SWAP REQUESTS ]
-</Link>
+  <div className="nav-actions">
+    {token ? (
+      <button
+        onClick={() => {
+          localStorage.removeItem("token");
+          setToken(null);
+        }}
+      >
+        [ LOG OUT ]
+      </button>
+    ) : (
+      <Link className="nav-button" to="/login">
+        [ LOGIN ]
+      </Link>
+    )}
 
-<Link className="nav-button" to="/create">
-  [ CREATE LISTING ]
-</Link>
+    <Link className="nav-button" to="/swaps">
+      [ SWAP REQUESTS ]
+    </Link>
 
-<Link className="nav-button" to="/register">
-  [ REGISTER ]
-</Link>    
-   </div>
-      </nav>
-
+    <Link className="nav-button nav-create" to="/create">
+      + CREATE LISTING
+    </Link>
+  </div>
+</nav>
 
       {/* HERO */}
       <section className="hero">
@@ -133,33 +143,28 @@ return (
         </div>
 
       </section>
-
-
+     
       {/* FEATURED ITEMS */}
       <section className="products-section">
 
         <div className="section-title">
           <h2>FEATURED ITEMS</h2>
           <div></div>
-          <span>[ VIEW ALL → ]</span>
+<Link to="/browse">[ VIEW ALL → ]</Link>
         </div>
 
        <div className="product-grid">
-  {listings.map((listing) => (
-    <ListingCard
-      key={listing.id}
-      item={listing.item}
-      condition={listing.condition}
-      category={listing.category}
-      image={listing.image}
-      tagClass={
-        listing.condition === "Excellent"
-          ? "like-new"
-          : listing.condition === "Good"
-            ? "good"
-            : "used"
-      }
-    />
+     {listings.filter((listing) => featuredIds.includes(listing.id)).map((listing) => (
+<ListingCard
+  key={listing.id}
+  {...listing}
+  image={
+    listing.images?.length
+      ? `http://localhost:3000${listing.images[0]}`
+      : listing.image
+  }
+  onClick={() => navigate(`/listing/${listing.id}`)}
+/>
   ))}
 </div>
       </section>
@@ -174,62 +179,21 @@ return (
         <div className="section-title">
           <h2>SUGGESTED FOR YOU</h2>
           <div></div>
-          <span>[ VIEW ALL → ]</span>
+          <Link to="/browse">[ VIEW ALL → ]</Link>
         </div>
 
         <div className="product-grid">
 
-          <div className="product-card">
-            <div className="product-name">LEGO SET</div>
-            <div className="product-placeholder">🚀</div>
-            <div className="tag used">USED</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>COLLECTIBLES</p>
-          </div>
+           {listings.filter((listing) => !featuredIds.includes(listing.id)).map((listing) => (
+        <ListingCard
+        key={listing.id}
+        {...listing}
+        onClick={() => navigate(`/listing/${listing.id}`)}
+      />
+    ))}
+  </div>
 
-          <div className="product-card">
-            <div className="product-name">FUJIFILM CAMERA</div>
-            <div className="product-placeholder">📷</div>
-            <div className="tag good">GOOD COND.</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>PHOTOGRAPHY</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">HOODIE</div>
-            <div className="product-placeholder">👕</div>
-            <div className="tag like-new">LIKE NEW</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>FASHION</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">MECHANICAL KB</div>
-            <div className="product-placeholder">⌨️</div>
-            <div className="tag used">USED</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>TECH</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">SKATEBOARD</div>
-            <div className="product-placeholder">🛹</div>
-            <div className="tag good">GOOD COND.</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>SPORTS</p>
-          </div>
-
-          <div className="product-card">
-            <div className="product-name">WATCH</div>
-            <div className="product-placeholder">⌚</div>
-            <div className="tag like-new">LIKE NEW</div>
-            <div className="card-bottom">BARTER™</div>
-            <p>ACCESSORIES</p>
-          </div>
-
-        </div>
-
-      </section>
+</section>
 
 
       {/* FOOTER */}

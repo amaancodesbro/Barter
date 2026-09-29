@@ -1,5 +1,7 @@
 import CreateListing from "./CreateListing.jsx";
 import Register from "./Register.jsx";
+import About from "./About.jsx";
+import HowItWorks from "./HowItWorks.jsx";
 import ListingDetails from "./ListingDetails.jsx";
 import SwapRequests from "./SwapRequests.jsx";
 import Login from "./Login.jsx";
@@ -78,6 +80,8 @@ function Router() {
             </ProtectedRoute>
           }
         />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/about" element={<About />} />
 
       </Routes>
     </BrowserRouter>

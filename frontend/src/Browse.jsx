@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ListingCard from "./components/ListingCard";
 
 function Browse() {
-    const searchInputRef = useRef(null);
+  const searchInputRef = useRef(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [listings, setListings] = useState([]);
-  const [search, setSearch] = useState("");
+const [search, setSearch] = useState(searchParams.get("search") || "");
   const [category, setCategory] = useState("ALL");
 
 
@@ -35,7 +36,17 @@ function Browse() {
 
   return (
     <section className="browse-page">
+        <button
+  className="browse-back-button"
+  onClick={() => navigate("/")}
+>
+  ← BACK TO HOME
+</button>
+
+
+<div className="browse-header"></div>
       <div className="browse-header">
+
         <p className="browse-kicker">[ MARKETPLACE ]</p>
 
 <h1>SEARCH ITEMS</h1>
@@ -43,6 +54,7 @@ function Browse() {
           FIND SOMETHING YOU WANT. OFFER SOMETHING YOU HAVE.
         </p>
       </div>
+   
 
       <div className="browse-controls">
         <input
@@ -53,7 +65,8 @@ function Browse() {
           onChange={(event) => setSearch(event.target.value)}
         />
 
-        <button onClick={() => setCategory("ALL")}>ALL</button>
+        <button className={category === "ALL" ? "active" : ""}
+          onClick={() => setCategory("ALL")}>ALL </button>   
         <button onClick={() => setCategory("TECH")}>TECH</button>
         <button onClick={() => setCategory("GAMING")}>GAMING</button>
         <button onClick={() => setCategory("FASHION")}>FASHION</button>
@@ -70,8 +83,11 @@ function Browse() {
               item={listing.item}
               condition={listing.condition}
               category={listing.category}
-              image={listing.image}
-              tagClass={
+              image={
+                listing.images?.length
+                ? `http://localhost:3000${listing.images[0]}`
+                : listing.image
+                }              tagClass={
                 listing.condition === "Excellent"
                   ? "like-new"
                   : listing.condition === "Good"

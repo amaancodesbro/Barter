@@ -4,6 +4,7 @@ function ListingDetails({ token }) {
   const { id } = useParams();
 const navigate = useNavigate();
 const [listing, setListing] = useState(null);
+const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showOffer, setShowOffer] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [myItems, setMyItems] = useState([]);
@@ -39,6 +40,15 @@ fetch("http://localhost:3000/listings")
     if (!listing) {
       return <div className="listing-loading">LOADING...</div>;
     }
+    const galleryImages = listing.images?.length
+  ? listing.images.map((imagePath) =>
+      imagePath.startsWith("http")
+        ? imagePath
+        : `http://localhost:3000${imagePath}`
+    )
+  : listing.image
+    ? [listing.image]
+    : [];
 
   return (
     <section className="listing-details">
@@ -52,13 +62,50 @@ fetch("http://localhost:3000/listings")
       {!showOffer ? (
         <div className="details-card">
 
-          <div className="details-image">
-            {listing.image ? (
-              <img src={listing.image} alt={listing.item} />
-            ) : (
-              "📦"
-            )}
-          </div>
+       <div className="details-image">
+  {galleryImages.length > 0 ? (
+    <>
+      <img
+        src={galleryImages[currentImageIndex]}
+        alt={`${listing.item} ${currentImageIndex + 1}`}
+      />
+
+      {galleryImages.length > 1 && (
+        <>
+          <button
+            type="button"
+            className="gallery-arrow gallery-prev"
+            onClick={() =>
+              setCurrentImageIndex((current) =>
+                current === 0 ? galleryImages.length - 1 : current - 1
+              )
+            }
+          >
+            ‹
+          </button>
+
+          <button
+            type="button"
+            className="gallery-arrow gallery-next"
+            onClick={() =>
+              setCurrentImageIndex((current) =>
+                current === galleryImages.length - 1 ? 0 : current + 1
+              )
+            }
+          >
+            ›
+          </button>
+
+          <span className="gallery-counter">
+            {currentImageIndex + 1} / {galleryImages.length}
+          </span>
+        </>
+      )}
+    </>
+  ) : (
+    "📦"
+  )}
+</div>
 
           <div className="details-info">
 

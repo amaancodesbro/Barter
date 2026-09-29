@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SwapRequests({ token }) {
+  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [listings, setListings] = useState([]);
 
@@ -59,6 +61,12 @@ function SwapRequests({ token }) {
 
   return (
     <section className="swap-requests">
+        <button
+  className="page-back-button"
+  onClick={() => navigate("/")}
+>
+  ← BACK TO HOME
+</button>
       <div className="swap-requests-header">
         <p>[ TRADE ACTIVITY ]</p>
 
@@ -157,6 +165,8 @@ function SwapRequests({ token }) {
       )}
     </section>
   );
+  
 }
+
 
 export default SwapRequests;

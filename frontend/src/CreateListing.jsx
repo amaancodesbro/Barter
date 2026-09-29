@@ -1,10 +1,12 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function CreateListing({ token, onCreated }) {
+    const navigate = useNavigate();
   const [item, setItem] = useState("");
   const [condition, setCondition] = useState("Excellent");
   const [category, setCategory] = useState("TECH");
   const [image, setImage] = useState("");
+  const [selectedImages, setSelectedImages] = useState([]);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (event) => {
@@ -12,19 +14,23 @@ function CreateListing({ token, onCreated }) {
     setMessage("CREATING LISTING...");
 
     try {
+       const formData = new FormData();
+
+     formData.append("item", item);
+     formData.append("condition", condition);
+     formData.append("category", category);
+
+     selectedImages.forEach((file) => {
+     formData.append("images", file);
+     });
+
       const response = await fetch("http://localhost:3000/listings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          item,
-          condition,
-          category,
-          image,
-        }),
-      });
+      method: "POST",
+      headers: {
+      Authorization: `Bearer ${token}`,
+     },
+     body: formData,
+});
 
       const data = await response.json();
 
@@ -39,7 +45,7 @@ function CreateListing({ token, onCreated }) {
       setCondition("Excellent");
       setCategory("TECH");
       setImage("");
-
+      setSelectedImages([]); 
 if (onCreated) {
   onCreated();
 }    } catch (error) {
@@ -49,6 +55,12 @@ if (onCreated) {
 
   return (
     <section className="create-listing-page">
+        <button
+  className="page-back-button"
+  onClick={() => navigate("/")}
+>
+  ← BACK TO HOME
+</button>
       <div className="create-listing-card">
         <p>[ MARKETPLACE ENTRY ]</p>
         <h1>CREATE LISTING</h1>
@@ -81,12 +93,58 @@ if (onCreated) {
             <option value="OTHER">OTHER</option>
           </select>
 
-          <input
-            type="text"
-            placeholder="IMAGE PATH — /assets/item.png"
-            value={image}
-            onChange={(event) => setImage(event.target.value)}
-          />
+       <div className="image-upload">
+  <input
+    id="listing-images"
+    className="image-upload-input"
+    type="file"
+    accept="image/*"
+    multiple
+   onChange={(event) => {
+  const newFiles = Array.from(event.target.files);
+
+  setSelectedImages((currentImages) => [
+    ...currentImages,
+    ...newFiles
+  ]);
+
+  event.target.value = "";
+}}
+  />
+
+  <label htmlFor="listing-images" className="image-upload-button">
+    + ADD PHOTOS
+  </label>
+
+  <p className="image-upload-hint">
+    SELECT MULTIPLE IMAGES FROM YOUR DEVICE
+  </p>
+</div>
+<div className="image-preview-list">
+  {selectedImages.map((file, index) => (
+    <div className="image-preview" key={`${file.name}-${index}`}>
+      <img
+        src={URL.createObjectURL(file)}
+        alt={`Selected listing ${index + 1}`}
+      />
+
+      <button
+        type="button"
+        className="image-preview-remove"
+        onClick={() => {
+          setSelectedImages((currentImages) =>
+            currentImages.filter((_, imageIndex) => imageIndex !== index)
+          );
+        }}
+        aria-label={`Remove ${file.name}`}
+      >
+        ×
+      </button>
+
+      <p>{file.name}</p>
+    </div>
+  ))}
+</div>
 
           <button type="submit">
             CREATE LISTING →
