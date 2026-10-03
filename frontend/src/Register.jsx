@@ -1,11 +1,15 @@
 import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 
 function Register() {
     const navigate = useNavigate();
   const [name, setName] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
   const [message, setMessage] = useState("");
 
   const handleRegister = async (event) => {
@@ -14,17 +18,19 @@ function Register() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/users/register",
+        `${API_URL}/users/register`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
+body: JSON.stringify({
+  name,
+  email,
+  password,
+  phone,
+  whatsapp,
+}),
         }
       );
 
@@ -81,6 +87,19 @@ function Register() {
             onChange={(event) => setPassword(event.target.value)}
             required
           />
+          <input
+  type="tel"
+  placeholder="PHONE NUMBER (OPTIONAL)"
+  value={phone}
+  onChange={(event) => setPhone(event.target.value)}
+/>
+
+<input
+  type="tel"
+  placeholder="WHATSAPP NUMBER (OPTIONAL)"
+  value={whatsapp}
+  onChange={(event) => setWhatsapp(event.target.value)}
+/>
 
           <button type="submit">
             CREATE ACCOUNT →

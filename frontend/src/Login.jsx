@@ -2,6 +2,7 @@ import { useState } from "react";
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
@@ -11,7 +12,7 @@ function Login({ onLogin }) {
     setMessage("LOGGING IN...");
 
     try {
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const path = require("path");
+const bcrypt = require("bcryptjs");
 const express = require ("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -240,33 +241,38 @@ app.post(
 
 app.post("/users/register", async (req, res) => {
     try {
-        const newUser = req.body;
+        const { name, email, password, phone, whatsapp } = req.body;
 
-        if (!newUser.name || !newUser.email || !newUser.password) {
+        if (!name || !email || !password) {
             return res.status(400).json({
                 message: "Name, email and password are required"
             });
         }
 
-        const existingUser = await User.findOne({
-            email: newUser.email
-        });
+        const existingUser = await User.findOne({ email });
 
         if (existingUser) {
             return res.status(400).json({
                 message: "Email already registered"
             });
         }
-
+        const hashedPassword = await bcrypt.hash(password, 10);
         const latestUser = await User.findOne().sort({ id: -1 });
         const newId = latestUser ? latestUser.id + 1 : 1;
 
         const savedUser = await User.create({
-            ...newUser,
-            id: newId
+            id: newId,
+            name,
+            email,
+            password: hashedPassword,
+            phone: phone || "",
+            whatsapp: whatsapp || ""
         });
 
-        res.json(savedUser);
+        const userResponse = savedUser.toObject();
+        delete userResponse.password;
+
+        res.json(userResponse);
 
     } catch (error) {
         console.error("Registration failed:", error);
@@ -288,11 +294,26 @@ app.post("/users/login", async (req, res) => {
             });
         }
 
-        if (user.password !== password) {
-            return res.status(401).json({
-                message: "Invalid email or password"
-            });
-        }
+       const isHashedPassword = user.password.startsWith("$2");
+
+let isPasswordCorrect;
+
+if (isHashedPassword) {
+    isPasswordCorrect = await bcrypt.compare(password, user.password);
+} else {
+    isPasswordCorrect = user.password === password;
+
+    if (isPasswordCorrect) {
+        user.password = await bcrypt.hash(password, 10);
+        await user.save();
+    }
+}
+
+if (!isPasswordCorrect) {
+    return res.status(401).json({
+        message: "Invalid email or password"
+    });
+}
 
         const token = jwt.sign(
             { id: user.id },
@@ -310,6 +331,46 @@ app.post("/users/login", async (req, res) => {
         res.status(500).json({
             message: "Failed to login"
         });
+    }
+});
+app.get("/users/contact", authenticateToken, async (req, res) => {
+    try {
+        const user = await User.findOne({ id: req.user.id })
+            .select("name email phone whatsapp");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json(user);
+    } catch (error) {
+        console.error("Failed to fetch contact details:", error);
+        res.status(500).json({ message: "Failed to fetch contact details" });
+    }
+});
+app.patch("/users/contact", authenticateToken, async (req, res) => {
+    try {
+        const { phone, whatsapp } = req.body;
+
+        const updatedUser = await User.findOneAndUpdate(
+            { id: req.user.id },
+            {
+                $set: {
+                    phone: phone || "",
+                    whatsapp: whatsapp || ""
+                }
+            },
+            { new: true }
+        ).select("-password");
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json(updatedUser);
+    } catch (error) {
+        console.error("Contact update failed:", error);
+        res.status(500).json({ message: "Failed to update contact details" });
     }
 });
 app.post("/swap-requests", authenticateToken, async (req, res) => {
@@ -393,9 +454,42 @@ app.get("/swap-requests", authenticateToken, async (req, res) => {
             ]
         });
 
-        res.json(userRequests);
+        const requestsWithContact = await Promise.all(
+            userRequests.map(async (request) => {
+                const requestData = request.toObject();
+
+                // Only provide contact details after acceptance
+                if (request.status !== "accepted") {
+                    return requestData;
+                }
+
+                // Identify the other person in this swap
+                const partnerId =
+                    request.senderId === userId
+                        ? request.receiverId
+                        : request.senderId;
+
+                const partner = await User.findOne({ id: partnerId })
+                    .select("name email phone whatsapp");
+
+                requestData.contactPartner = partner
+                    ? {
+                        name: partner.name,
+                        email: partner.email,
+                        phone: partner.phone,
+                        whatsapp: partner.whatsapp
+                    }
+                    : null;
+
+                return requestData;
+            })
+        );
+
+        res.json(requestsWithContact);
 
     } catch (error) {
+        console.error("Failed to fetch swap requests:", error);
+
         res.status(500).json({
             message: "Failed to fetch swap requests"
         });

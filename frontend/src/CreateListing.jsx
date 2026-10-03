@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 function CreateListing({ token, onCreated }) {
     const navigate = useNavigate();
   const [item, setItem] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
   const [condition, setCondition] = useState("Excellent");
   const [category, setCategory] = useState("TECH");
   const [image, setImage] = useState("");
@@ -24,7 +25,7 @@ function CreateListing({ token, onCreated }) {
      formData.append("images", file);
      });
 
-      const response = await fetch("http://localhost:3000/listings", {
+      const response = await fetch(`${API_URL}/listings`, {
       method: "POST",
       headers: {
       Authorization: `Bearer ${token}`,

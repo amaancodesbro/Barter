@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 function SwapRequests({ token }) {
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
   const [requests, setRequests] = useState([]);
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
     if (!token) return;
 
-    fetch("http://localhost:3000/swap-requests", {
+    fetch(`${API_URL}/swap-requests`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -17,7 +18,7 @@ function SwapRequests({ token }) {
       .then((response) => response.json())
       .then((data) => setRequests(data));
 
-    fetch("http://localhost:3000/listings")
+    fetch(`${API_URL}/listings`)
       .then((response) => response.json())
       .then((data) => setListings(data));
   }, [token]);
@@ -29,7 +30,7 @@ function SwapRequests({ token }) {
   const handleDecision = async (requestId, status) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/swap-requests/${requestId}`,
+       `${API_URL}/swap-requests/${requestId}`,
         {
           method: "PUT",
           headers: {
@@ -158,6 +159,46 @@ function SwapRequests({ token }) {
                     </button>
                   </div>
                 )}
+                {request.status === "accepted" && request.contactPartner && (
+  <div className="contact-partner">
+    <h3>CONTACT SWAP PARTNER</h3>
+
+    <p>
+      Connect with {request.contactPartner.name} to arrange your exchange.
+    </p>
+
+    <div className="contact-buttons">
+      {request.contactPartner.whatsapp && (
+        <a
+          className="contact-button whatsapp-button"
+          href={`https://wa.me/${request.contactPartner.whatsapp.replace(/\D/g, "")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WHATSAPP
+        </a>
+      )}
+
+      {request.contactPartner.phone && (
+        <a
+          className="contact-button phone-button"
+          href={`tel:${request.contactPartner.phone}`}
+        >
+          CALL
+        </a>
+      )}
+
+      {request.contactPartner.email && (
+        <a
+          className="contact-button email-button"
+          href={`mailto:${request.contactPartner.email}`}
+        >
+          EMAIL
+        </a>
+      )}
+    </div>
+  </div>
+)}
               </div>
             );
           })}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 function ListingDetails({ token }) {
   const { id } = useParams();
 const navigate = useNavigate();
+const API_URL = import.meta.env.VITE_API_URL;
 const [listing, setListing] = useState(null);
 const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showOffer, setShowOffer] = useState(false);
@@ -15,7 +16,7 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
 
   useEffect(() => {
-     fetch(`http://localhost:3000/listings/${id}`)
+    fetch(`${API_URL}/listings/${id}`)
       .then((response) => response.json())
       .then((data) => setListing(data));
 }, [id]);
@@ -26,7 +27,7 @@ const [currentImageIndex, setCurrentImageIndex] = useState(0);
      const payload = JSON.parse(atob(token.split(".")[1]));
 const userId = Number(payload.id);
 
-fetch("http://localhost:3000/listings")
+fetch(`${API_URL}/listings`)
   .then((response) => response.json())
   .then((data) => {
     const myListings = data.filter(
@@ -44,7 +45,7 @@ fetch("http://localhost:3000/listings")
   ? listing.images.map((imagePath) =>
       imagePath.startsWith("http")
         ? imagePath
-        : `http://localhost:3000${imagePath}`
+        : `${API_URL}${imagePath}`
     )
   : listing.image
     ? [listing.image]
@@ -162,18 +163,26 @@ fetch("http://localhost:3000/listings")
                 YOU OFFER
               </p>
 
-              <div className="swap-image">
-
-                {selectedOffer?.image ? (
-                  <img
-                    src={selectedOffer.image}
-                    alt={selectedOffer.item}
-                  />
-                ) : (
-                  "📦"
-                )}
-
-              </div>
+           <div className="swap-image">
+  {(selectedOffer?.images?.length || selectedOffer?.image) ? (
+    <img
+      src={
+        selectedOffer.images?.length
+          ? selectedOffer.images[0].startsWith("http")
+            ? selectedOffer.images[0]
+            : `${API_URL}${selectedOffer.images[0]}`
+          : selectedOffer.image.startsWith("http")
+            ? selectedOffer.image
+            : selectedOffer.image.startsWith("/uploads/")
+              ? `${API_URL}${selectedOffer.image}`
+              : `http://localhost:5173${selectedOffer.image}`
+      }
+      alt={selectedOffer.item}
+    />
+  ) : (
+    "📦"
+  )}
+</div>
 
               <h2>
                 {selectedOffer
@@ -184,8 +193,8 @@ fetch("http://localhost:3000/listings")
               {!selectedOffer && (
                 <div className="offer-options">
 
-                  {myItems.map((item) => (
-                    <button
+{myItems.filter((item) => item.status?.toLowerCase() !== "swapped").map((item) => (
+                        <button
                       key={item.item}
                       onClick={() => setSelectedOffer(item)}
                     >
@@ -212,18 +221,16 @@ fetch("http://localhost:3000/listings")
                 YOU WANT
               </p>
 
-              <div className="swap-image">
-
-                {listing.image ? (
-                  <img
-                    src={`http://localhost:5173${listing.image}`}
-                    alt={listing.item}
-                  />
-                ) : (
-                  "📦"
-                )}
-
-              </div>
+           <div className="swap-image">
+  {galleryImages.length > 0 ? (
+    <img
+      src={galleryImages[0]}
+      alt={listing.item}
+    />
+  ) : (
+    "📦"
+  )}
+</div>
 
               <h2>
                 {listing.item}
@@ -255,7 +262,7 @@ fetch("http://localhost:3000/listings")
   onClick={async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/swap-requests",
+      `${API_URL}/swap-requests`,
         {
           method: "POST",
           headers: {

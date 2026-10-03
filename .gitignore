@@ -1,3 +1,12 @@
 .env
 node_modules/
 uploads/
+# Local data snapshots and migration files
+listings.json
+users.json
+swapRequests.json
+listings-backup.json\
+
+
+.DS_Store
+*.icloud

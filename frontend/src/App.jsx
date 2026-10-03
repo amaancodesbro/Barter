@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 import "./App.css";
 import ListingCard from "./components/ListingCard";
@@ -8,6 +9,7 @@ import ListingCard from "./components/ListingCard";
 
 function App() {
  const [listings, setListings] = useState([]);
+ const [search, setSearch] = useState("");
  const navigate = useNavigate();
 
 const featuredIds = [1, 2, 3, 4, 5, 16];
@@ -16,7 +18,7 @@ const featuredIds = [1, 2, 3, 4, 5, 16];
 );
 
   useEffect(() => {
-    fetch("http://localhost:3000/listings")
+    fetch(`${API_URL}/listings`)
       .then((response) => response.json())
       .then((data) => setListings(data));
   }, []);
@@ -73,6 +75,11 @@ return (
     <Link className="nav-button" to="/swaps">
       [ SWAP REQUESTS ]
     </Link>
+    {token && (
+  <Link className="nav-button" to="/contact-settings">
+    [ MY CONTACT ]
+  </Link>
+)}
 
     <Link className="nav-button nav-create" to="/create">
       + CREATE LISTING
@@ -160,7 +167,7 @@ return (
   {...listing}
   image={
     listing.images?.length
-      ? `http://localhost:3000${listing.images[0]}`
+      ? `${API_URL}${listing.images[0]}`
       : listing.image
   }
   onClick={() => navigate(`/listing/${listing.id}`)}
@@ -184,13 +191,20 @@ return (
 
         <div className="product-grid">
 
-           {listings.filter((listing) => !featuredIds.includes(listing.id)).map((listing) => (
-        <ListingCard
-        key={listing.id}
-        {...listing}
-        onClick={() => navigate(`/listing/${listing.id}`)}
-      />
-    ))}
+       {listings
+  .filter((listing) => !featuredIds.includes(listing.id))
+  .map((listing) => (
+    <ListingCard
+      key={listing.id}
+      {...listing}
+      image={
+        listing.images?.length
+          ? `${API_URL}${listing.images[0]}`
+          : listing.image
+      }
+      onClick={() => navigate(`/listing/${listing.id}`)}
+    />
+  ))}
   </div>
 
 </section>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 import ListingCard from "./components/ListingCard";
 
 function Browse() {
@@ -13,7 +14,7 @@ const [search, setSearch] = useState(searchParams.get("search") || "");
 
 
   useEffect(() => {
-    fetch("http://localhost:3000/listings")
+   fetch(`${API_URL}/listings`)
       .then((response) => response.json())
       .then((data) => {
         setListings(data);
@@ -85,7 +86,7 @@ const [search, setSearch] = useState(searchParams.get("search") || "");
               category={listing.category}
               image={
                 listing.images?.length
-                ? `http://localhost:3000${listing.images[0]}`
+                ? `${API_URL}${listing.images[0]}`
                 : listing.image
                 }              tagClass={
                 listing.condition === "Excellent"
