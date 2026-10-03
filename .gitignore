@@ -9,4 +9,7 @@ listings-backup.json\
 
 
 .DS_Store
+*.icloudlistings-backup.json
+
 *.icloud
+listings-backup.json
