@@ -1,154 +1,297 @@
-# Barter
 
-A full-stack marketplace application that allows users to exchange items with each other instead of buying and selling them.
+# 🔄 BARTER — Community Marketplace
 
-Barter enables users to create item listings, browse available products, specify what they are looking for in exchange, and send swap requests to other users. The application includes authentication, image uploads, swap management, and contact exchange after a swap is accepted.
+> A full-stack MERN marketplace where people exchange items instead of purchasing them directly.
 
-The project was built to understand and implement a complete full-stack application using the MERN ecosystem, from React-based UI and REST APIs to authentication, database persistence, and file handling.
+Barter is a hands-on full-stack web application built to explore how a real marketplace can connect users, listings, images, authentication, and item exchanges through a complete client-server architecture.
 
-## Features
+Users can create listings for items they own, describe what they want in exchange, browse other listings, send swap requests, accept or reject offers, and connect with an exchange partner after a trade is accepted.
 
-### User Authentication
-- User registration and login
-- Secure password hashing using bcrypt
-- JWT-based authentication
-- Protected backend routes using authentication middleware
-- Persistent authentication between frontend requests
-
-### Marketplace Listings
-- Create item listings
-- Specify item name, condition, category, and desired exchange item
-- Browse available listings
-- Search and filter marketplace listings
-- View detailed listing information
-- Support for listing availability and swapped states
-
-### Multiple Image Uploads
-- Upload multiple images when creating a listing
-- Image validation and file-size restrictions using Multer
-- Uploaded images served through the Express backend
-- MongoDB stores image paths while image files remain in the upload storage
-- Frontend supports both legacy single-image listings and newer multi-image listings
-
-### Swap Request System
-- Send swap requests to other users
-- View incoming and outgoing requests
-- Accept or reject requests
-- Persist request status in MongoDB
-- Automatically mark a listing as `Swapped` after an accepted request
-- Prevent swapped listings from being selected for new swaps
-
-### Contact Exchange
-- Manage phone and WhatsApp contact details
-- Contact information is only made available for relevant accepted swaps
-- WhatsApp, phone, and email contact actions
-- Contact information persists through MongoDB
-
-### Frontend Experience
-- React-based single-page application
-- Client-side navigation using React Router
-- Responsive marketplace interface
-- Search and browsing experience
-- Listing cards and detailed listing views
-- Form handling and API integration
-- Conditional UI based on authentication and listing/swap state
-
-### Data & Persistence
-- MongoDB Atlas for persistent application data
-- Mongoose models for users, listings, and swap requests
-- CRUD operations across application resources
-- Migration of legacy JSON-based data into MongoDB
-
-## Tech Stack
-
-### Frontend
-- **HTML5** — application structure and semantic markup
-- **CSS3** — responsive layouts, styling, cards, forms, navigation, and visual design
-- **JavaScript (ES6+)** — application logic, API communication, event handling, and data processing
-- **React** — component-based user interface development and frontend state management
-- **React Router** — client-side routing and navigation between application pages
-- **Vite** — frontend development server and build tool
-
-### Backend
-- **Node.js** — JavaScript runtime for the backend
-- **Express.js** — REST API development, routing, middleware, and HTTP request handling
-- **Multer** — multipart/form-data processing and multiple image uploads
-- **JWT (JSON Web Tokens)** — token-based authentication
-- **bcrypt** — secure password hashing and password verification
-
-### Database
-- **MongoDB Atlas** — cloud-hosted NoSQL database
-- **Mongoose** — MongoDB ODM used for schemas, models, queries, and database operations
-
-### Development & Version Control
-- **Git** — source control and version history
-- **GitHub** — repository hosting and project version control
-- **VS Code** — development environment
-- **REST APIs** — communication between the React frontend and Express backend
-
-### Architecture
-Barter follows a MERN-based full-stack architecture:
-
-**MongoDB → Express.js → React → Node.js**
-
-The React frontend communicates with the Express/Node.js backend through HTTP/REST API requests. The backend handles authentication, application logic, file uploads, and database operations through Mongoose and MongoDB Atlas.
+<p align="center">
+  <img src="screenshots/homepage.png" alt="Barter Homepage" width="100%">
+</p>
 
 ---
 
-## 🏗️ How Barter Works
+## ✨ Features
 
-Barter follows a client-server architecture where the React frontend communicates with a Node.js/Express backend through REST APIs. The backend handles authentication, application logic, file uploads, and database operations, while MongoDB Atlas provides persistent data storage.
+### 👤 User Authentication
+- User registration and login
+- JWT-based authentication
+- Password hashing with bcrypt
+- Protected application functionality
+- Authentication middleware on protected backend routes
 
-### Application Flow
+### 📦 Listings
+- Create item listings
+- Add item name, category, condition, and desired exchange
+- Upload multiple images
+- Browse available listings
+- Search listings
+- View individual listing details
+- Update owned listings
+- Delete owned listings
+- Listing ownership checks prevent users from modifying another user's listing
 
-User
- │
- ▼
-React + Vite Frontend
- │
- │ HTTP / REST API requests
- ▼
-Node.js + Express Backend
- │
- ├── Authentication
- │     ├── bcrypt
- │     └── JWT
- │
- ├── Business Logic
- │     ├── Listings
- │     ├── Swap Requests
- │     └── Contact Information
- │
- ├── File Uploads
- │     └── Multer
- │
- ▼
-Mongoose
- │
- ▼
-MongoDB Atlas
+### 🖼️ Image Uploads
+- Multiple images supported per listing
+- Multer handles multipart image uploads
+- Maximum of 5 images per listing
+- Maximum file-size limit of 5 MB per image
+- Server-side image validation
+- Uploaded files are served through Express
+- Image paths are stored with listing data in MongoDB
 
-User fills listing form
-        ↓
-React collects form data
-        ↓
-FormData sends listing + images
-        ↓
-POST /listings
-        ↓
-Express receives request
-        ↓
-Multer processes uploaded files
-        ↓
-Listing data + image paths are stored
-        ↓
-Mongoose writes document to MongoDB
-        ↓
-Backend returns response
-        ↓
-React updates the application
+### 🔄 Swap Requests
+- Select one of your own listings as an offer
+- Send a swap request to another user
+- View incoming requests
+- View outgoing requests
+- Accept or reject requests
+- Accepted swaps mark the associated listing as swapped
+- Swapped listings are excluded from the available swap-item selector
 
-This architecture separates the frontend presentation layer from the backend API and database layer, allowing the application to be developed, tested, and deployed as separate layers.
+### 📞 Contact System
+- Users can save phone and WhatsApp details
+- Contact information can be updated through Contact Settings
+- Contact information becomes available to the intended swap partner after an accepted exchange
+- Supports Email, Phone, and WhatsApp contact actions
+
+### 🎨 User Interface
+- Custom futuristic marketplace design
+- Responsive styling
+- Homepage
+- Browse marketplace
+- Listing details
+- Create Listing
+- Swap Requests
+- Contact Settings
+- About page
+- How It Works page
+- React Router navigation
+
+---
+
+## 🎯 Project Purpose
+
+The main purpose of Barter was to build a complete full-stack application rather than isolated features.
+
+The project was designed to provide practical experience with:
+
+- React frontend development
+- Frontend/backend communication
+- REST-style APIs
+- Express routing
+- MongoDB and Mongoose
+- Authentication and authorization
+- JWT bearer tokens
+- Password hashing
+- File uploads
+- Multipart form data
+- Database persistence
+- CRUD operations
+- Git and GitHub
+- Debugging real application problems
+- Preparing a full-stack application for deployment
+
+The project was built as a hands-on learning and portfolio application.
+
+---
+
+## 💡 The Problem
+
+Traditional online marketplaces usually focus on buying and selling items using money.
+
+Barter explores a different model:
+
+> Instead of asking "How much does this cost?", ask "What would you trade for it?"
+
+A user can list something they own, specify what they would like in exchange, and receive offers from other users.
+
+---
+
+## 🖥️ Application Screenshots
+
+### 🏠 Homepage
+
+The homepage introduces the Barter concept and provides navigation to the marketplace and major application features.
+
+<p align="center">
+  <img src="screenshots/homepage.png" alt="Barter Homepage" width="100%">
+</p>
+
+---
+
+### 🔎 Marketplace
+
+Users can search and browse available items by category.
+
+<p align="center">
+  <img src="screenshots/marketplace.png" alt="Barter Marketplace" width="100%">
+</p>
+
+---
+
+### ➕ Create Listing
+
+Users can create a listing and upload multiple images from their device.
+
+<p align="center">
+  <img src="screenshots/create-listing.png" alt="Create Listing" width="100%">
+</p>
+
+---
+
+### 🔄 Propose a Trade
+
+A user selects one of their own items and proposes it in exchange for another user's item.
+
+<p align="center">
+  <img src="screenshots/propose-trade.png" alt="Propose a Trade" width="100%">
+</p>
+
+---
+
+### 📋 Swap Requests
+
+Users can manage incoming and outgoing barter requests and view the status of their exchanges.
+
+<p align="center">
+  <img src="screenshots/swap-requests.png" alt="Swap Requests" width="100%">
+</p>
+
+---
+
+### 🔐 Login
+
+Authentication provides access to user-specific marketplace functionality.
+
+<p align="center">
+  <img src="screenshots/login.png" alt="Barter Login" width="100%">
+</p>
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+- React
+- React Router
+- Vite
+- Fetch API
+- React hooks such as `useState` and `useEffect`
+
+### Backend
+
+- Node.js
+- Express.js
+- Multer
+- bcryptjs
+- JSON Web Tokens (JWT)
+- REST-style API routes
+
+### Database
+
+- MongoDB Atlas
+- Mongoose
+
+### Development & Version Control
+
+- VS Code
+- Git
+- GitHub
+
+---
+
+## 🏗️ Application Architecture
+
+Barter follows a client-server architecture.
+
+The React frontend communicates with the Express/Node.js backend through HTTP/REST API requests.
+
+The backend handles:
+
+- Authentication
+- Authorization
+- Application logic
+- Listing operations
+- Swap request operations
+- File uploads
+- Contact information
+- Database operations
+
+MongoDB Atlas provides persistent database storage through Mongoose.
+
+### High-Level Architecture
+
+    React + Vite Frontend
+              │
+              │ HTTP / REST API
+              ▼
+       Node.js + Express
+              │
+       ┌──────┼───────────────┐
+       │      │               │
+       ▼      ▼               ▼
+    JWT     Multer       Application Logic
+    Auth    Uploads            │
+                               ▼
+                           Mongoose
+                               │
+                               ▼
+                         MongoDB Atlas
+
+This separation keeps the frontend presentation layer separate from the backend API and database layer, allowing the application to be developed, tested, and deployed as separate layers.
+
+---
+
+## 🔄 How Barter Works
+
+The main application flow is:
+
+    User
+      ↓
+    React + Vite Frontend
+      ↓
+    HTTP / REST API Request
+      ↓
+    Node.js + Express Backend
+      ↓
+    Authentication / Business Logic
+      ↓
+    Mongoose
+      ↓
+    MongoDB Atlas
+      ↓
+    Backend Response
+      ↓
+    React updates the application
+
+### Listing Creation Flow
+
+    User fills listing form
+          ↓
+    React collects form data
+          ↓
+    FormData packages listing data + images
+          ↓
+    POST /listings
+          ↓
+    Express receives the multipart request
+          ↓
+    Multer processes uploaded files
+          ↓
+    Listing data + image paths are prepared
+          ↓
+    Mongoose writes the listing to MongoDB
+          ↓
+    Backend returns the response
+          ↓
+    React updates the application
 
 ---
 
@@ -160,197 +303,277 @@ Barter uses token-based authentication to protect user-specific functionality an
 
 When a user creates an account:
 
-```text
-User submits registration form
-        ↓
-React sends registration data
-        ↓
-POST /users/register
-        ↓
-Express validates the request
-        ↓
-Password is hashed using bcrypt
-        ↓
-User document is stored in MongoDB
-        ↓
-Registration response is returned
+    User submits registration form
+              ↓
+    React sends registration data
+              ↓
+    POST /users/register
+              ↓
+    Express validates the request
+              ↓
+    Password is hashed using bcrypt
+              ↓
+    User document is stored in MongoDB
+              ↓
+    Registration response is returned
 
-Passwords are not stored as plain-text values. The backend uses bcrypt to hash passwords before storing them in the database.
+Passwords are not intended to be stored as plain-text values. The backend uses bcrypt to hash passwords before storing them.
 
 ### Login
 
-When a registered user logs in:
+    User submits email + password
+              ↓
+    React sends login request
+              ↓
+    POST /users/login
+              ↓
+    Express finds the user
+              ↓
+    bcrypt verifies the password
+              ↓
+    JWT is generated
+              ↓
+    Token is returned to the frontend
+              ↓
+    Frontend uses the token for protected requests
 
-User submits email + password
-        ↓
-React sends login request
-        ↓
-POST /users/login
-        ↓
-Backend finds the user
-        ↓
-bcrypt verifies the password
-        ↓
-JWT is generated
-        ↓
-Token is returned to the frontend
+### Protected Requests
 
-### Protected Routes
+Protected requests send the token using:
 
-Protected backend routes use authentication middleware to verify the JWT before allowing access.
+    Authorization: Bearer <token>
 
-React request
-     │
-     │ Authorization: Bearer <token>
-     ▼
-Express route
-     │
-     ▼
-Authentication middleware
-     │
-     ├── Invalid / missing token → Unauthorized
-     │
-     └── Valid token
-             ↓
-       Identify authenticated user
-             ↓
-       Continue to route handler
+The backend authentication middleware verifies the token before allowing protected operations to continue.
 
-       This authentication flow separates authentication responsibilities between the frontend and backend. The frontend sends the token with protected requests, while the backend remains responsible for verifying the token and authorizing access to protected route handlers.
+---
 
-       ---
+## 🔑 Authorization & Ownership
 
-## 🖼️ Listing & Image Upload System
+Authentication answers:
 
-Barter supports marketplace listings with multiple image uploads. The listing system combines React form handling, `FormData`, Express routes, Multer file processing, and MongoDB persistence.
+> "Who is this user?"
 
-### Listing Creation Flow
+Authorization answers:
 
-```text
-User fills listing form
-        ↓
-React collects listing data
-        ↓
-FormData packages text fields + image files
-        ↓
-POST /listings
-        ↓
-Express receives multipart request
-        ↓
-Multer processes uploaded images
-        ↓
-Images are saved to upload storage
-        ↓
-Image paths are stored in the listing document
-        ↓
-Mongoose saves listing to MongoDB
-        ↓
-Backend returns listing response
+> "Is this user allowed to perform this action?"
+
+Barter uses backend authorization checks for user-specific operations.
+
+For example, when updating or deleting a listing:
+
+    Request arrives
+          ↓
+    JWT is verified
+          ↓
+    Authenticated user is identified
+          ↓
+    Listing is found
+          ↓
+    Listing ownership is checked
+          ↓
+    Action is allowed or rejected
+
+This prevents a user from simply changing a listing ID and modifying another user's listing.
+
+Frontend restrictions are not treated as the primary security boundary. The backend is responsible for enforcing authorization.
+
+---
+
+## 📦 Listing & CRUD System
+
+Listings form the core marketplace functionality.
+
+The backend provides CRUD operations:
+
+- Create
+- Read
+- Update
+- Delete
+
+### Listing Creation
+
+    React form
+       ↓
+    FormData
+       ↓
+    POST /listings
+       ↓
+    Express
+       ↓
+    Authentication middleware
+       ↓
+    Multer
+       ↓
+    Mongoose
+       ↓
+    MongoDB
+
+### Listing Retrieval
+
+    React requests listings
+          ↓
+    GET /listings
+          ↓
+    Express
+          ↓
+    Mongoose queries MongoDB
+          ↓
+    Listing documents returned
+          ↓
+    React renders listing cards
+
+Individual listings can also be retrieved through:
+
+    GET /listings/:id
+
+---
+
+## 🖼️ Image Upload System
+
+Barter uses Multer for handling listing image uploads.
+
+The frontend sends listing data and images using `FormData`.
+
+The backend receives the multipart request and Multer processes the uploaded files.
+
+### Upload Flow
+
+    User selects images
+          ↓
+    React stores selected files
+          ↓
+    FormData is created
+          ↓
+    POST /listings
+          ↓
+    Multer receives files
+          ↓
+    Files are written to uploads/
+          ↓
+    Image paths are generated
+          ↓
+    Listing document stores image paths
+          ↓
+    MongoDB stores the listing data
+          ↓
+    Express serves images through /uploads
+
+Uploaded image files are served through:
+
+    /uploads/<filename>
+
+The backend exposes the local `uploads/` directory through the `/uploads` route.
+
+### Upload Limits
+
+- Maximum 5 images per listing
+- Maximum 5 MB per image
+- Image MIME-type validation
+
+### Current Storage Limitation
+
+The current local development implementation stores uploaded images in the local `uploads/` directory.
+
+MongoDB stores the image paths, not the actual image binary.
+
+The `uploads/` directory is intentionally excluded from GitHub.
+
+This means a fresh clone of the repository will not contain the existing local uploaded images. A new developer can still run the application and upload their own images locally.
+
+For production deployment, the application should move image storage to persistent cloud/object storage because local filesystem storage may not persist across deployments or instance replacement.
 
 ---
 
 ## 🔄 Swap Request Workflow
 
-The swap system is the core business workflow of Barter. It allows users to propose exchanges, manage incoming and outgoing requests, and complete a swap through an accept/reject flow.
+The swap system is the main business feature of Barter.
 
-### Swap Flow
+### Step 1 — User Finds an Item
 
-```text
-User views another listing
-        ↓
-Selects an item to offer
-        ↓
-Sends swap request
-        ↓
-Request stored in MongoDB
-        ↓
-Recipient reviews request
-        ↓
-   ┌────┴────┐
-   ↓         ↓
-Reject     Accept
-   ↓         ↓
-Request    Listing
-remains    becomes
-rejected   "Swapped"
-             ↓
-      Contact information
-      becomes available
+A user browses the marketplace and opens a listing they are interested in.
+
+### Step 2 — User Chooses Their Offer
+
+The user selects one of their own listings as the item they are willing to exchange.
+
+### Step 3 — Swap Request Is Created
+
+The frontend sends:
+
+    POST /swap-requests
+
+The backend creates the request and stores it in MongoDB.
+
+### Step 4 — Listing Owner Reviews Request
+
+The owner can view incoming requests from the Swap Requests page.
+
+### Step 5 — Accept or Reject
+
+The listing owner can accept or reject a pending request.
+
+    PUT /swap-requests/:id
+
+### Step 6 — Accepted Swap
+
+When a request is accepted:
+
+    Swap request
+          ↓
+    Status becomes accepted
+          ↓
+    Associated listing becomes swapped
+          ↓
+    Listing is no longer available for normal swapping
+          ↓
+    Accepted swap partners can access the intended contact options
+
+Swapped listings are also excluded from the offer selector so they cannot be used as active swap offers.
 
 ---
 
 ## 📞 Contact System
 
-Barter includes a contact-exchange system that allows users to manage their contact details and share them with the relevant swap partner after a swap has been accepted.
+Barter includes a Contact Settings system for users who want to provide contact information for exchanges.
 
-### Contact Settings
-
-Authenticated users can update:
+Users can save:
 
 - Phone number
 - WhatsApp number
 
-The Contact Settings page retrieves the user's existing contact information and allows it to be updated through:
+### Contact Settings Flow
 
-```text
-GET /users/contact
-        ↓
-Load saved contact details
-        ↓
-User edits phone / WhatsApp
-        ↓
-PATCH /users/contact
-        ↓
-Updated information stored in MongoDB
+    Contact Settings page
+          ↓
+    GET /users/contact
+          ↓
+    Existing contact details loaded
+          ↓
+    User edits information
+          ↓
+    PATCH /users/contact
+          ↓
+    MongoDB updated
+          ↓
+    Updated details persist after refresh
 
----
+Contact information associated with an accepted swap can be presented to the intended exchange partner.
 
-## 📂 Project Structure
+The frontend supports:
 
-```text
-Barter/
-│
-├── index.js
-├── auth.js
-├── package.json
-├── package-lock.json
-├── migrate-listings.js
-├── migrate-swap-requests.js
-│
-├── models/
-│   ├── users.js
-│   ├── listings.js
-│   └── swapRequests.js
-│
-├── frontend/
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── index.html
-│   │
-│   └── src/
-│       ├── main.jsx
-│       ├── Router.jsx
-│       ├── App.jsx
-│       ├── Browse.jsx
-│       ├── CreateListing.jsx
-│       ├── ListingDetails.jsx
-│       ├── Login.jsx
-│       ├── Register.jsx
-│       ├── SwapRequests.jsx
-│       ├── ContactSettings.jsx
-│       ├── HowItWorks.jsx
-│       ├── About.jsx
-│       └── components/
-│           └── ListingCard.jsx
-│
-└── README.md
+- Email using `mailto:`
+- Phone using `tel:`
+- WhatsApp using `wa.me`
 
----
 ---
 
 ## 🔌 API Overview
 
-Barter uses a REST-style API built with Node.js and Express. Protected endpoints use JWT authentication through the `Authorization: Bearer <token>` header.
+Barter uses a REST-style API built with Node.js and Express.
+
+Protected endpoints use JWT authentication through the:
+
+    Authorization: Bearer <token>
 
 ### User & Authentication Routes
 
@@ -388,300 +611,715 @@ Uploaded listing images are served through:
 
     /uploads/<filename>
 
-The Express server exposes the local `uploads/` directory through the `/uploads` route.
+---
+
+## 📁 Project Structure
+
+The repository is organized into frontend, backend, database-model, migration, and documentation components.
+
+    Barter/
+    │
+    ├── frontend/
+    │   ├── public/
+    │   │   └── assets/
+    │   ├── src/
+    │   │   ├── components/
+    │   │   │   └── ListingCard.jsx
+    │   │   ├── About.jsx
+    │   │   ├── App.jsx
+    │   │   ├── App.css
+    │   │   ├── Browse.jsx
+    │   │   ├── ContactSettings.jsx
+    │   │   ├── CreateListing.jsx
+    │   │   ├── HowItWorks.jsx
+    │   │   ├── ListingDetails.jsx
+    │   │   ├── Login.jsx
+    │   │   ├── Register.jsx
+    │   │   ├── Router.jsx
+    │   │   ├── SwapRequests.jsx
+    │   │   ├── index.css
+    │   │   └── main.jsx
+    │   ├── index.html
+    │   ├── package.json
+    │   └── vite.config.js
+    │
+    ├── models/
+    │   ├── listings.js
+    │   ├── swapRequests.js
+    │   └── users.js
+    │
+    ├── screenshots/
+    │   ├── homepage.png
+    │   ├── marketplace.png
+    │   ├── create-listing.png
+    │   ├── propose-trade.png
+    │   ├── swap-requests.png
+    │   └── login.png
+    │
+    ├── auth.js
+    ├── index.js
+    ├── migrate-listings.js
+    ├── migrate-swap-requests.js
+    ├── package.json
+    ├── package-lock.json
+    ├── README.md
+    └── .gitignore
+
+Local-only files such as `.env`, `node_modules`, `uploads/`, and migrated JSON data are intentionally excluded from the public repository where appropriate.
+
+---
+
+## 🗃️ Database
+
+Barter uses MongoDB Atlas as its cloud database and Mongoose as the ODM.
+
+The main data areas are:
+
+### Users
+
+Stores user information required for authentication and contact functionality.
+
+Relevant fields include:
+
+- `id`
+- `name`
+- `email`
+- `password`
+- `phone`
+- `whatsapp`
+
+Passwords are handled through the authentication system rather than returned in normal user responses.
+
+### Listings
+
+Stores marketplace item information, including:
+
+- Listing ID
+- Item information
+- Category
+- Condition
+- Desired exchange
+- Owner information
+- Image paths
+- Listing status
+
+### Swap Requests
+
+Stores barter requests between users, including:
+
+- Request ID
+- Requester
+- Listing owner
+- Offered listing
+- Requested listing
+- Request status
+
+The associated listing is updated when a swap is accepted.
+
+---
+
+## 🔐 Environment Variables
+
+The application uses environment variables for sensitive configuration.
+
+The `.env` file is local and should never be committed to GitHub.
+
+The project uses environment configuration for values such as:
+
+    MONGO_URI
+    JWT_SECRET
+
+The actual values are intentionally not documented or exposed.
+
+For deployment, these variables should be configured privately in the hosting platform's environment-variable settings.
+
 ---
 
 ## ⚙️ Installation
 
-### 1. Clone the repository
+### Prerequisites
 
-    git clone <repository-url>
+Install:
+
+- Node.js
+- npm
+- MongoDB Atlas account or another MongoDB connection
+- Git
+
+### 1. Clone the Repository
+
+Clone the Barter repository and move into the project directory.
+
     cd Barter
 
-### 2. Install backend dependencies
+### 2. Install Backend Dependencies
 
 From the project root:
 
     npm install
 
-### 3. Install frontend dependencies
+### 3. Configure Environment Variables
 
-Open a terminal inside the `frontend/` directory:
+Create a `.env` file in the backend/project root.
 
-    cd frontend
-    npm install
-
-### 4. Configure environment variables
-
-Create the required `.env` files using the environment variables described in the **Environment Variables** section.
-
-### 5. Start the backend
-
-From the project root:
-
-    node index.js
-
-### 6. Start the frontend
-
-From the `frontend/` directory:
-
-    npm run dev
-
-The frontend and backend run as separate processes during local development.
-
----
-
-## 🔑 Environment Variables
-
-Barter uses environment variables to keep configuration values and sensitive credentials separate from the application source code.
-
-### Backend
-
-Create a `.env` file in the project root:
+Add the required environment variables:
 
     MONGO_URI=your_mongodb_connection_string
     JWT_SECRET=your_jwt_secret
 
+Do not commit this file.
+
+### 4. Install Frontend Dependencies
+
+Move into the frontend:
+
+    cd frontend
+
+Then install dependencies:
+
+    npm install
+
+### 5. Start the Backend
+
+Return to the project root and start the Express server using the project's configured start command.
+
+The backend development server runs on port:
+
+    3000
+
+### 6. Start the Frontend
+
+Inside the frontend directory, start the Vite development server using the project's configured development command.
+
+The frontend development server runs on port:
+
+    5173
+
+### 7. Open the Application
+
+Open the local Vite application in your browser.
+
+---
+
+## 🧪 Testing & Verification
+
+Testing during development focused on the core user journeys and persistence of important data.
+
+### Authentication
+
+Verified during development:
+
+- User registration
+- User login
+- JWT authentication
+- Protected functionality
+- Password hashing implementation
+
+### Listings
+
+Verified:
+
+- Listing creation
+- Multiple image uploads
+- Image paths stored in MongoDB
+- Uploaded images displayed correctly
+- Images remained visible after refresh
+- Listing browsing
+- Listing details
+- Listing ownership behavior
+
+### Swap Requests
+
+Verified:
+
+- Creating swap requests
+- Incoming/outgoing request display
+- Accepting requests
+- Rejecting requests
+- Listing status changes after accepted swaps
+- Swapped listings excluded from the available offer selector
+
+### Contact System
+
+Verified:
+
+- Contact details can be updated
+- Contact changes persist after refresh
+- Accepted swap partners can receive intended contact options
+- Email behavior
+- Phone/WhatsApp actions
+
 ### Frontend
 
-Create a `.env` file inside the `frontend/` directory:
+Verified during development:
 
-    VITE_API_URL=http://localhost:3000
-
-The frontend uses `VITE_API_URL` as the base URL for communicating with the Express backend.
-
-The `.env` files are excluded from version control through `.gitignore` and should never be committed to the repository.
-
-For production deployment, the environment values should be configured through the hosting platform rather than hardcoded into the source code.
+- Homepage
+- Navigation
+- Browse/search flow
+- Contact Settings
+- Back to Home navigation
+- Main application pages
+- Responsive styling work
 
 ---
 
 ## 🧠 Technical Challenges & Solutions
 
-Building Barter involved solving several practical full-stack development problems across the frontend, backend, database, authentication, file handling, and application logic.
+One of the main goals of Barter was to encounter and solve real development problems rather than only follow a tutorial.
 
-### 1. Migrating Application Data from JSON to MongoDB
+### 1. MongoDB Connection Configuration
 
-The project initially used local JSON files for application data. As the application evolved, persistent database storage was introduced using MongoDB Atlas and Mongoose.
+A MongoDB connection initially failed because the MongoDB URI was not being loaded correctly from the environment.
 
-Existing listing and swap-request data had to be migrated without losing the previously created records.
+The error indicated that the URI passed to Mongoose was undefined.
 
-The migration process introduced dedicated migration scripts that transferred the existing data into MongoDB while retaining local backups for safety.
+The issue reinforced the importance of:
 
-**Key learning:** Migrating from local file-based storage to a database requires careful handling of existing data, schema structure, and one-time migration operations.
+- `.env` configuration
+- Environment variables
+- Correct variable names
+- Loading configuration before connecting to MongoDB
+- Keeping secrets outside source control
 
-### 2. Debugging an Undefined MongoDB Connection URI
+### 2. Moving Application Data to MongoDB
 
-During development, the backend failed to connect to MongoDB because the MongoDB connection string was being evaluated as `undefined`.
+The project initially used local JSON-style data during development.
 
-The issue was traced to the environment configuration rather than the MongoDB connection logic itself. After correcting the `.env` configuration and restarting the backend process, the connection was restored.
+The application was migrated toward MongoDB Atlas using Mongoose.
 
-**Key learning:** Environment variables are loaded when the backend process starts, so configuration changes require the server to be restarted. Debugging the actual value being passed to the database connection was essential.
+Migration scripts were used to move existing listing and swap-request data into MongoDB.
 
-### 3. Extending Listings from Single Images to Multiple Images
+This required understanding the difference between:
 
-The original listing system supported a single image through an `image` field. The application was later extended to support multiple images through an `images` array.
+- Local JSON data
+- MongoDB documents
+- Mongoose models
+- API responses
+- Frontend state
 
-Multer was introduced to process multipart/form-data requests and handle multiple uploaded files. The backend generates unique filenames, validates image types, applies file-size limits, and stores the resulting file paths with the listing.
+### 3. Multiple Image Uploads
 
-**Key learning:** File uploads require different request handling from normal JSON requests. `FormData`, multipart requests, Multer, filesystem storage, and database references all work together to implement the upload pipeline.
+A normal JSON request is not designed to carry binary image files directly.
 
-### 4. Maintaining Compatibility with Existing Listings
+The solution was to use:
 
-After introducing the `images` array, older listings still contained the original `image` field.
+- `FormData` on the frontend
+- `multipart/form-data`
+- Multer on the Express backend
+- Local file storage during development
+- Image paths stored in MongoDB
 
-Instead of breaking existing data, the frontend was designed to recognize both formats. This allowed migrated listings and newly created listings to continue working within the same application.
+The flow became:
 
-**Key learning:** Changing a data model in an existing application requires considering previously stored data and maintaining compatibility during the transition.
+    React
+      ↓
+    FormData
+      ↓
+    multipart/form-data
+      ↓
+    Express
+      ↓
+    Multer
+      ↓
+    uploads/
+      ↓
+    image paths
+      ↓
+    MongoDB
 
-### 5. Implementing Secure Authentication
+### 4. Image Persistence After Refresh
 
-Authentication required more than simply checking whether a user existed.
+An important issue was ensuring that images were not only visible immediately after uploading but also remained available after refreshing the page.
 
-The registration flow hashes passwords using bcrypt before storing them. During login, the backend verifies the submitted password and generates a JWT containing the authenticated user's identity.
+The solution involved:
 
-Protected endpoints use authentication middleware to verify the JWT before allowing the request to continue.
+- Saving the uploaded file
+- Saving its path in the listing document
+- Serving the uploads directory through Express
+- Constructing the frontend image URL from the stored path
 
-**Key learning:** Authentication involves multiple layers: password hashing, password verification, token generation, token transmission, token verification, and protected route handling.
+This separated the actual image file from the database record while allowing React to retrieve the image.
 
-### 6. Managing Swap Request State
+### 5. Authentication Middleware
 
-The swap system required more than simply creating a request document.
+Protected routes needed a way to identify the authenticated user.
 
-A request can move between states such as pending, accepted, or rejected. Accepting a request also changes the associated listing to `Swapped` and removes it from the available swap-item selection.
+JWT authentication was introduced so the frontend could send a token with protected requests.
 
-The state must persist in MongoDB so that the correct result remains visible after refreshing the application.
+The backend middleware:
 
-**Key learning:** Application features often involve state transitions across multiple related pieces of data. Backend business logic must keep these state changes consistent.
+    Authorization: Bearer <token>
 
-### 7. Restricting Contact Information to Accepted Swaps
+verifies the token and identifies the user before the protected route continues.
 
-Contact information needed to remain separate from publicly visible listing information.
+This became important for operations such as:
 
-Users can maintain their phone and WhatsApp details through the Contact Settings system, but relevant contact information becomes available to the other user only after a swap request has been accepted.
+- Creating listings
+- Updating listings
+- Deleting listings
+- Creating swap requests
+- Managing swap requests
+- Updating contact information
 
-**Key learning:** Authorization is different from authentication. Knowing who a user is is not enough; the backend must also determine whether that user is authorized to access specific information.
+### 6. Listing Ownership
 
-### 8. Separating Frontend and Backend Configuration
+A frontend button alone is not enough to prevent another user from modifying a listing.
 
-The frontend originally depended on backend URLs during development. As the project moved toward deployment readiness, these URLs were centralized through the `VITE_API_URL` environment variable.
+The backend therefore checks ownership before allowing update or delete operations.
 
-This allows the same frontend codebase to communicate with different backend environments without changing individual API calls throughout the application.
+The important principle is:
 
-**Key learning:** Environment-based configuration makes applications easier to maintain and prepares the codebase for separate development and production environments.
+    Authentication
+          +
+    Ownership verification
+          =
+    Authorized listing operation
 
-### 9. Debugging Backend Route Availability
+This is a backend responsibility and should not depend only on frontend visibility.
 
-The Contact Settings frontend initially received a `404` response when requesting `GET /users/contact`.
+### 7. Swap State Management
 
-The route implementation was present, but the running Express process had not yet been restarted after the backend changes. Restarting the server loaded the updated route and resolved the issue.
+The swap system needed to connect multiple pieces of application state.
 
-**Key learning:** When debugging an API route, the problem may be in the route itself, the request URL, or the currently running server process. Checking the server state and HTTP response helped isolate the issue.
+For example:
 
-### 10. Managing Local Files Safely with Git
+    Pending Request
+          ↓
+    Accepted / Rejected
+          ↓
+    If Accepted
+          ↓
+    Listing becomes Swapped
+          ↓
+    Listing is removed from active swap selection
 
-As the project evolved, local uploads, environment files, migration data, backups, and macOS-generated files were present in the project directory.
+This required coordination between swap-request documents, listing documents, frontend rendering, and user actions.
 
-The `.gitignore` configuration was updated to prevent sensitive or unnecessary local files from being committed. Tracked legacy JSON data was also removed from Git tracking while preserving the local files.
+### 8. Legacy Data Compatibility
 
-Before the final commit, the repository was reviewed using Git status and tracked-file inspection rather than blindly staging the entire project.
+During development, some older listing records used a different image representation from newer listings.
 
-**Key learning:** Version control is not just committing code. A professional repository requires deliberate staging, appropriate `.gitignore` rules, and verification of what will actually be published.
+Older records could contain a single image field while newer listings used an `images` array.
+
+The frontend was adjusted to support the existing data structure rather than requiring all older records to be recreated.
+
+This was a practical lesson in maintaining compatibility while an application evolves.
+
+### 9. Search Navigation
+
+The homepage search functionality required the search value to be passed into the Browse page.
+
+The frontend uses React state to capture the search input and navigation to transfer the query to the marketplace page.
+
+The final flow is:
+
+    User enters search
+          ↓
+    React stores search state
+          ↓
+    User presses Enter
+          ↓
+    Browse page opens with search query
+          ↓
+    Marketplace displays matching items
+
+### 10. Contact Settings
+
+Contact Settings needed to load saved information, allow edits, and persist changes.
+
+The component:
+
+- Fetches saved contact information
+- Populates the inputs
+- Uses the authenticated user's JWT
+- Sends updates through PATCH
+- Displays success/error feedback
+
+The route was added through React Router.
+
+### 11. Contact Information After Accepted Swaps
+
+Contact information should not simply be exposed to every marketplace user.
+
+The swap-request system was designed so that contact-partner information is attached in the intended accepted-swap context.
+
+The frontend can then provide:
+
+- WhatsApp
+- Call
+- Email
+
+This connects the technical authorization model to an actual marketplace use case.
+
+### 12. Local Image Storage and Deployment
+
+Local image storage works during development but introduces an important deployment limitation.
+
+The current implementation stores uploaded images in:
+
+    uploads/
+
+The repository intentionally does not contain this directory.
+
+Therefore, the application source code can be cloned independently, but the existing local uploaded images are not part of the GitHub repository.
+
+A production deployment should use persistent image storage such as managed object/image storage.
 
 ---
 
-## 🧪 Testing
+## 📊 API & Frontend Concepts Practiced
 
-The main application workflows were tested during development to verify frontend behavior, backend API responses, database persistence, authentication, and state changes.
+Barter provided practical experience with:
 
-### Core Functional Tests
+### Frontend
 
-- User registration and login
-- JWT authentication and protected routes
-- Listing creation
-- Multiple image uploads
-- Listing persistence after refresh
-- Marketplace browsing and search
-- Listing details
-- Sending swap requests
-- Viewing incoming and outgoing swap requests
-- Accepting swap requests
-- Rejecting swap requests
-- Persisting accepted/rejected request states
-- Updating listing status to `Swapped`
-- Removing swapped listings from available swap-item selection
-- Updating phone and WhatsApp contact details
-- Persisting contact details after refresh
-- Restricting contact information to accepted swap partners
-- Navigation between major application pages
+- React components
+- Props
+- State
+- `useState`
+- `useEffect`
+- Controlled forms
+- Form submission
+- Fetch API
+- JSON
+- FormData
+- Conditional rendering
+- React Router
+- Navigation
+- Responsive CSS
 
-### API & Data Verification
+### Backend
 
-Backend behavior was verified through the application's frontend flows and database state.
+- Node.js
+- Express
+- Routes
+- Middleware
+- Authentication middleware
+- HTTP methods
+- Request bodies
+- Route parameters
+- Status codes
+- REST-style API design
+- Static file serving
+- Multer
+- Error handling
 
-Testing included checking that:
+### Database
 
-- API requests reached the intended Express routes
-- Protected endpoints required authentication
-- MongoDB documents were created and updated correctly
-- Uploaded image paths were stored with listings
-- Swap request status changes persisted in MongoDB
-- Listing status changes persisted after accepting a swap
-- Contact information updates persisted after refresh
+- MongoDB Atlas
+- Mongoose
+- Schemas
+- Models
+- Queries
+- Document persistence
+- Data migration
 
-### Development Verification
+### Security
 
-Git status and tracked-file inspection were also used before publishing the project to ensure that sensitive and unnecessary local files such as `.env`, `node_modules`, uploaded files, backups, and legacy local data were not included in the repository.
+- JWT
+- Bearer tokens
+- bcrypt
+- Authentication
+- Authorization
+- Ownership checks
+- Environment variables
+- Secret management
+
+### Development
+
+- Debugging
+- Git
+- GitHub
+- `.gitignore`
+- Repository cleanup
+- Migration scripts
+- Local development
+- Deployment preparation
 
 ---
 
-## 🚀 Future Improvements
+## 🚧 Known Limitations & Deployment Considerations
 
-The current version of Barter focuses on the core barter workflow, authentication, listings, image uploads, swap requests, and contact exchange. The following improvements could extend the platform into a more complete and scalable marketplace.
+Barter is currently a local development application prepared for the next deployment stage.
 
-### Door-to-Door Courier Integration
+The following areas require production configuration or further hardening:
 
-Integrate third-party courier and logistics services to support door-to-door pickup and delivery of items involved in accepted barter exchanges.
+### Image Storage
 
-Potential features include:
+The current implementation uses local `uploads/` storage.
 
-- Pickup and delivery address management
-- Courier booking after a swap is accepted
-- Delivery status and tracking
-- Shipping cost calculation
-- Integration with third-party courier APIs
+Production deployment should use persistent managed image storage.
 
-### Improved UI/UX
+### Frontend API URLs
 
-Further improve the visual experience with:
+Some frontend API/image references currently use the local backend address during development.
 
-- More polished listing cards and image galleries
-- Improved mobile responsiveness
-- Smoother navigation and interactions
-- Better loading, empty, and error states
-- Additional animations and visual feedback
+For deployment, these should be replaced with a configurable production API base URL using frontend environment variables.
 
-### Advanced Search & Filtering
+### CORS
 
-Expand marketplace discovery with filters such as:
+The deployed frontend and backend will have different origins.
 
-- Category
-- Item condition
-- Location
-- Desired item
-- Availability status
+Production CORS configuration must therefore allow the intended frontend origin.
 
-### Real-Time Messaging
+### MongoDB Atlas
 
-Add a messaging system that allows users to communicate directly about an exchange before accepting a swap request.
+The deployed backend must be configured with the correct MongoDB Atlas connection string and appropriate network access settings.
 
-### Notifications
+### JWT Configuration
 
-Introduce in-app and email notifications for important events such as:
+The production environment should use a secure private JWT secret and appropriate token configuration.
 
-- New swap requests
-- Accepted or rejected requests
-- New messages
-- Delivery updates
+### Validation & Reliability
 
-### Ratings & Reputation
+Further production hardening can include:
 
-Allow users to rate each other after completing a successful exchange, creating a basic reputation system that can help users make more informed exchanges.
+- Stronger schema validation
+- More comprehensive input validation
+- Better API error consistency
+- JWT expiration configuration
+- Rate limiting where appropriate
+- Upload cleanup after failed operations
+- Additional swap-state consistency checks
+- Better handling of competing swap requests
 
-### Cloud-Based Image Storage
+These are deployment and hardening considerations rather than reasons to expand the core product unnecessarily.
 
-Move listing images from local server storage to a cloud-based storage service for more reliable production deployment, scalability, and persistent file storage.
+---
+
+## 🌱 Future Improvements
+
+Potential future improvements include:
+
+- Persistent cloud image storage
+- Production deployment
+- Environment-based API configuration
+- Improved server-side validation
+- Stronger swap consistency rules
+- Better error and loading states
+- More comprehensive automated testing
+- Improved mobile experience
+- Listing pagination
+- Notifications
+- User profiles
+- Messaging between swap partners
+- Trade history
+- More advanced marketplace filtering
+
+The focus after the current MVP is to improve reliability and deployment rather than continuously adding unnecessary features.
+
+---
+
+## 🚀 Deployment Direction
+
+The intended production architecture is:
+
+    React + Vite
+          ↓
+    Frontend Hosting
+          ↓
+    Production API
+          ↓
+    Node.js + Express
+          ↓
+    MongoDB Atlas
+
+For images:
+
+    React
+      ↓
+    Express / Upload Service
+      ↓
+    Persistent Cloud Image Storage
+      ↓
+    Image URL
+      ↓
+    MongoDB Listing Document
+
+The local `uploads/` approach is suitable for development but should be replaced or adapted for persistent production storage.
+
+---
+
+## 📚 What This Project Demonstrates
+
+Barter demonstrates progression from individual coding exercises to building a complete full-stack application.
+
+The project combines:
+
+    Frontend
+       +
+    Backend
+       +
+    Database
+       +
+    Authentication
+       +
+    File Uploads
+       +
+    CRUD
+       +
+    Business Logic
+       +
+    Git/GitHub
+       +
+    Deployment Preparation
+
+It also demonstrates practical experience debugging problems across multiple layers of an application rather than treating the frontend and backend as isolated pieces.
 
 ---
 
 ## 👨‍💻 Author
-
-**Amaan Shaikh**
-
-## 👨‍💻 Author
-
-**Amaan Shaikh**
-
-Computer Science graduate focused on full-stack web development, backend development, and practical software engineering.
-
-### Project Ownership
 
 The concept and idea behind Barter were entirely my own. I built this project as a hands-on application for learning, deployment, and professional growth over a two-month development period.
 
-The project was developed to strengthen my understanding of full-stack development by working through real application requirements, debugging challenges, database integration, authentication, file handling, and deployment preparation.
+The project was developed to strengthen practical full-stack development skills through real implementation, debugging, database integration, authentication, image handling, and marketplace business logic.
 
-### Technologies & Concepts Practiced
+This project represents my practical progression from building individual features to developing and preparing a complete full-stack application for deployment with guidance.
 
-- JavaScript
-- React
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- REST APIs
-- JWT Authentication
-- bcrypt
-- Multer
-- Git & GitHub
+---
 
-This project represents my practical progression from building individual features to developing and preparing a complete full-stack application for deployment with guidance. 
+## 📌 Project Status
+
+### Current Stage
+
+    BUILD
+      ↓
+    TEST
+      ↓
+    GIT CLEAN
+      ↓
+    README
+      ↓
+    GITHUB ✅
+      ↓
+    DEPLOY ← NEXT
+      ↓
+    PROOF
+      ↓
+    LEARNING
+      ↓
+    CV
+      ↓
+    INTERVIEW
+
+The repository has been pushed to GitHub and the documentation/screenshots are now being finalized before deployment.
+
+---
+
+## 🔗 Repository
+
+GitHub Repository:
+
+    amaancodesbro / Barter
+
+---
+
+## ⭐ Final Note
+
+Barter was built as a practical learning project with the goal of understanding how a complete full-stack application works from the user interface all the way to the database.
+
+The project focuses on learning through implementation:
+
+    Think → Build → Debug → Test → Document → Deploy → Explain
+
+The goal is not only to have a working application, but to understand the engineering decisions behind it and be able to explain them confidently.
