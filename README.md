@@ -658,7 +658,17 @@ Move listing images from local server storage to a cloud-based storage service f
 
 **Amaan Shaikh**
 
+## 👨‍💻 Author
+
+**Amaan Shaikh**
+
 Computer Science graduate focused on full-stack web development, backend development, and practical software engineering.
+
+### Project Ownership
+
+The concept and idea behind Barter were entirely my own. I built this project as a hands-on application for learning, deployment, and professional growth over a two-month development period.
+
+The project was developed to strengthen my understanding of full-stack development by working through real application requirements, debugging challenges, database integration, authentication, file handling, and deployment preparation.
 
 ### Technologies & Concepts Practiced
 
@@ -674,4 +684,4 @@ Computer Science graduate focused on full-stack web development, backend develop
 - Multer
 - Git & GitHub
 
-This project was built as a hands-on full-stack application to understand how frontend interfaces, backend APIs, authentication, databases, file handling, and application workflows work together in a real-world system.
+This project represents my practical progression from building individual features to developing and preparing a complete full-stack application for deployment with guidance. 
