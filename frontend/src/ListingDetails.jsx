@@ -175,7 +175,7 @@ fetch(`${API_URL}/listings`)
             ? selectedOffer.image
             : selectedOffer.image.startsWith("/uploads/")
               ? `${API_URL}${selectedOffer.image}`
-              : `http://localhost:5173${selectedOffer.image}`
+              : `${API_URL}${selectedOffer.image}`
       }
       alt={selectedOffer.item}
     />
