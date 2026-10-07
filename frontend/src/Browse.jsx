@@ -86,8 +86,10 @@ const [search, setSearch] = useState(searchParams.get("search") || "");
               category={listing.category}
               image={
                 listing.images?.length
-                ? `${API_URL}${listing.images[0]}`
-                : listing.image
+  ? listing.images[0].startsWith("http")
+    ? listing.images[0]
+    : `http://localhost:3000${listing.images[0]}`
+  : listing.image
                 }              tagClass={
                 listing.condition === "Excellent"
                   ? "like-new"

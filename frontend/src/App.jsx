@@ -167,8 +167,10 @@ return (
   {...listing}
   image={
     listing.images?.length
-      ? `${API_URL}${listing.images[0]}`
-      : listing.image
+  ? listing.images[0].startsWith("http")
+    ? listing.images[0]
+    : `http://localhost:3000${listing.images[0]}`
+  : listing.image
   }
   onClick={() => navigate(`/listing/${listing.id}`)}
 />
@@ -198,9 +200,11 @@ return (
       key={listing.id}
       {...listing}
       image={
-        listing.images?.length
-          ? `${API_URL}${listing.images[0]}`
-          : listing.image
+       listing.images?.length
+  ? listing.images[0].startsWith("http")
+    ? listing.images[0]
+    : `http://localhost:3000${listing.images[0]}`
+  : listing.image
       }
       onClick={() => navigate(`/listing/${listing.id}`)}
     />

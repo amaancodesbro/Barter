@@ -166,19 +166,17 @@ fetch(`${API_URL}/listings`)
            <div className="swap-image">
   {(selectedOffer?.images?.length || selectedOffer?.image) ? (
     <img
-      src={
-        selectedOffer.images?.length
-          ? selectedOffer.images[0].startsWith("http")
-            ? selectedOffer.images[0]
-            : `${API_URL}${selectedOffer.images[0]}`
-          : selectedOffer.image.startsWith("http")
-            ? selectedOffer.image
-            : selectedOffer.image.startsWith("/uploads/")
-              ? `${API_URL}${selectedOffer.image}`
-              : `${API_URL}${selectedOffer.image}`
-      }
-      alt={selectedOffer.item}
-    />
+  src={
+    selectedOffer.images?.length
+      ? selectedOffer.images[0].startsWith("http")
+        ? selectedOffer.images[0]
+        : `${API_URL}${selectedOffer.images[0]}`
+      : selectedOffer.image?.startsWith("http")
+        ? selectedOffer.image
+        : `${API_URL}${selectedOffer.image}`
+  }
+  alt={selectedOffer.item}
+/>
   ) : (
     "📦"
   )}
