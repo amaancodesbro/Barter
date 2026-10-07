@@ -924,13 +924,8 @@ footer div:last-child {
 }
 
 @media (max-width: 750px) {
-
   .navbar {
     padding: 0 20px;
-  }
-
-  .nav-actions a {
-    display: none;
   }
 
   .search-box {
@@ -3969,5 +3964,27 @@ body,
 
   .contact-settings {
     padding: 28px 20px;
+  }
+}
+/* MOBILE NAVBAR */
+@media (max-width: 750px) {
+  .navbar {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .nav-actions .nav-button,
+  .nav-actions button {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 7px;
   }
 }
