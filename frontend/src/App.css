@@ -3966,19 +3966,47 @@ body,
     padding: 28px 20px;
   }
 }
+
 /* MOBILE NAVBAR */
 @media (max-width: 750px) {
   .navbar {
-    padding: 14px 16px;
-    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 12px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .logo {
     font-size: 24px;
   }
 
+  .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .nav-links a {
+    white-space: nowrap;
+    font-size: 7px;
+  }
+
   .nav-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 1;
     gap: 6px;
+    max-width: 100%;
   }
 
   .nav-actions .nav-button,
@@ -3988,11 +4016,18 @@ body,
     font-size: 7px;
   }
 }
+
 /* MOBILE HERO */
 @media (max-width: 750px) {
-  .hero {
+   .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    width: 100%;
     min-height: auto;
-    padding: 45px 20px 35px;
+    padding: 35px 20px 45px;
     box-sizing: border-box;
     overflow: hidden;
   }
@@ -4004,17 +4039,16 @@ body,
     min-width: 0;
   }
 
-  .hero-text h1 {
+    .hero-text h1 {
     display: block;
     width: 100%;
     max-width: 100%;
     margin: 0;
-    font-size: clamp(34px, 10vw, 52px);
-    line-height: 1;
-    letter-spacing: -2px;
+    font-size: clamp(28px, 8vw, 42px);
+    line-height: 1.05;
+    letter-spacing: -1.5px;
     white-space: normal;
-    overflow-wrap: normal;
-    word-break: normal;
+    overflow-wrap: anywhere;
     box-sizing: border-box;
   }
 
@@ -4034,10 +4068,11 @@ body,
     box-sizing: border-box;
   }
 
-  .hero-box {
+    .hero-box {
     width: 100%;
-    max-width: 330px;
-    margin: 25px auto 0;
+    max-width: 280px;
+    margin: 30px auto 0;
+    flex-shrink: 0;
     box-sizing: border-box;
   }
 }
@@ -4065,9 +4100,12 @@ body,
     padding: 30px 18px;
   }
 
-  .page-back-button {
-    margin-bottom: 25px;
-  }
+ 
+.page-back-button {
+  position: static;
+  display: block;
+  margin: 0 0 25px;
+}
 
   .swap-requests-header {
     margin-bottom: 30px;
@@ -4190,22 +4228,39 @@ body,
     box-sizing: border-box;
   }
 
-  .swap-image {
+   .swap-image {
     width: 100%;
-    max-width: 300px;
+    max-width: 270px;
+    height: 220px;
+    min-width: 0;
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .swap-image img {
+    display: block;
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    box-sizing: border-box;
   }
 
   .swap-arrow {
-    transform: rotate(90deg);
-    margin: 5px 0;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  position: relative;
+  transform: rotate(90deg);
+  flex-shrink: 0;
+}
 
   .offer-options {
     display: flex;
@@ -4232,15 +4287,42 @@ body,
 }
 /* MOBILE CREATE LISTING */
 @media (max-width: 750px) {
-  .create-listing-page {
-    padding: 25px 18px 40px;
-  }
+.create-listing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  min-height: 100vh;
+  padding: 25px 18px 40px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background-attachment: scroll;
+}
+
+.create-listing-page .page-back-button {
+  position: relative;
+  top: auto;
+  left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 25px;
+  padding: 12px 18px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
 
   .create-listing-card {
     width: 100%;
     box-sizing: border-box;
     padding: 22px 18px;
   }
+
 
   .create-listing-card h1 {
     font-size: clamp(30px, 9vw, 48px);
@@ -4489,21 +4571,17 @@ body,
     padding: 22px;
   }
 }
-/* MOBILE NAV LINKS */
+/* FIX MOBILE BACK-TO-HOME BUTTONS */
 @media (max-width: 750px) {
-  .nav-links {
-    width: 100%;
-    max-width: 100%;
-    display: flex;
+  .page-back-button {
+    position: static;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    width: fit-content;
+    max-width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  .nav-links a {
-    white-space: nowrap;
-    font-size: 7px;
+    margin: 0 0 25px;
+    white-space: normal;
   }
 }
